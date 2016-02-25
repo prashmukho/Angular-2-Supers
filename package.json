@@ -24,6 +24,8 @@
     "concurrently": "^2.0.0",
     "lite-server": "^2.1.0",
     "typescript": "^1.7.5",
-    "typings": "^0.6.8"
+    "typings": "^0.6.8",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
   }
 }
