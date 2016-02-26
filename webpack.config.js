@@ -13,7 +13,7 @@ var metadata = {
   title: 'My Angular2 App with Webpack',
   baseUrl: '/',
   host: 'localhost',
-  port: 3001,
+  port: 8080,
   ENV: ENV
 };
 /*
@@ -28,7 +28,18 @@ module.exports = {
   // cache: false,
 
   // our angular app
-  entry: { 'polyfills': './src/polyfills.ts', 'main': './src/main.ts' },
+  entry: { 
+    'polyfills': [
+      'webpack-dev-server/client?http://127.0.0.1:8080/',
+      'webpack/hot/only-dev-server',
+      './src/polyfills.ts'
+    ],
+    'main': [
+      'webpack-dev-server/client?http://127.0.0.1:8080/',
+      'webpack/hot/only-dev-server',
+      './src/main.ts'
+    ] 
+  },
 
   // Config for our build files
   output: {
@@ -70,8 +81,12 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
+    // new webpack.optimize.OccurenceOrderPlugin(true),
+    // new webpack.optimize.CommonsChunkPlugin({ 
+    //   name: 'polyfills', 
+    //   filename: 'polyfills.bundle.js', 
+    //   minChunks: Infinity 
+    // }),
     // static assets
     // new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
     // generating html
@@ -83,9 +98,11 @@ module.exports = {
     //     'NODE_ENV': JSON.stringify(metadata.ENV)
     //   }
     // })
-
+    
+    // inline hot module reload with NodeJS API
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    // used with webpack/hot/only-dev-server entry point for autorefresh
+    new webpack.NoErrorsPlugin() 
   ],
 
   // Other module loader config
@@ -101,6 +118,7 @@ module.exports = {
     // historyApiFallback: true,
     // watchOptions: { aggregateTimeout: 300, poll: 1000 },
 
+    // inline hot module reload with NodeJS API
     hot: true,
     proxy: { '*': 'http://localhost:3000' }
   },
