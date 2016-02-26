@@ -5,15 +5,15 @@
  */
 var path = require('path');
 var webpack = require('webpack');
-var CopyWebpackPlugin  = require('copy-webpack-plugin');
+// var CopyWebpackPlugin  = require('copy-webpack-plugin');
 var HtmlWebpackPlugin  = require('html-webpack-plugin');
 var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 var metadata = {
-  title: 'Angular2 Webpack Starter by @gdi2990 from @AngularClass',
+  title: 'My Angular2 App with Webpack',
   baseUrl: '/',
   host: 'localhost',
-  port: 3000,
+  port: 3001,
   ENV: ENV
 };
 /*
@@ -73,16 +73,19 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
     // static assets
-    new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
+    // new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
     // generating html
-    new HtmlWebpackPlugin({ template: 'dist/index.html' }),
+    // new HtmlWebpackPlugin({ template: 'dist/index.html' }),
     // replace
-    new webpack.DefinePlugin({
-      'process.env': {
-        'ENV': JSON.stringify(metadata.ENV),
-        'NODE_ENV': JSON.stringify(metadata.ENV)
-      }
-    })
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     'ENV': JSON.stringify(metadata.ENV),
+    //     'NODE_ENV': JSON.stringify(metadata.ENV)
+    //   }
+    // })
+
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
 
   // Other module loader config
@@ -93,13 +96,23 @@ module.exports = {
   },
   // our Webpack Development Server config
   devServer: {
-    port: metadata.port,
-    host: metadata.host,
-    historyApiFallback: true,
-    watchOptions: { aggregateTimeout: 300, poll: 1000 }
+    // port: metadata.port,
+    // host: metadata.host,
+    // historyApiFallback: true,
+    // watchOptions: { aggregateTimeout: 300, poll: 1000 },
+
+    hot: true,
+    proxy: { '*': 'http://localhost:3000' }
   },
   // we need this due to problems with es6-shim
-  node: {global: 'window', progress: false, crypto: 'empty', module: false, clearImmediate: false, setImmediate: false}
+  node: {
+    global: 'window', 
+    progress: false, 
+    crypto: 'empty', 
+    module: false, 
+    clearImmediate: false, 
+    setImmediate: false
+  }
 };
 
 // Helper functions

@@ -1,13 +1,10 @@
 {
   "name": "angular2-webpack-starter",
-  "version": "3.0.0",
-  "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
-  "author": "Patrick Stapleton <patrick@angularclass.com>",
-  "homepage": "https://github.com/angularclass/angular2-webpack-starter",
   "license": "MIT",
   "scripts": {
-    "server:dev": "webpack-dev-server --hot --inline --progress --profile --colors --watch --display-error-details --display-cached",
-    "start": "npm run server:dev",
+
+    "server:dev": "webpack-dev-server --progress --colors",
+    "start": "NODE_PATH=$NODE_PATH:./src node server & npm run server:dev",
     "typings-install": "typings install",
     "postinstall": "npm run typings-install"
   },
@@ -30,22 +27,9 @@
     "html-webpack-plugin": "^2.9.0",
     "http-server": "^0.8.5",
     "imports-loader": "^0.6.5",
-    "istanbul-instrumenter-loader": "^0.2.0",
     "json-loader": "^0.5.4",
-    "karma": "^0.13.21",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-coverage": "^0.5.3",
-    "karma-jasmine": "^0.3.7",
-    "karma-mocha-reporter": "^1.1.6",
-    "karma-phantomjs-launcher": "^1.0.0",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "1.7.0",
-    "phantomjs-polyfill": "0.0.1",
-    "phantomjs-prebuilt": "^2.1.4",
-    "protractor": "^3.1.1",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.2",
-    "remap-istanbul": "^0.5.1",
     "rimraf": "^2.5.2",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.0",
@@ -63,16 +47,5 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-load-plugins": "^0.1.2",
     "webpack-md5-hash": "^0.0.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/angularclass/angular2-webpack-starter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/angularclass/angular2-webpack-starter/issues"
-  },
-  "engines": {
-    "node": ">= 4.2.1 <= 5",
-    "npm": ">= 3"
   }
 }

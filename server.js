@@ -1,20 +1,11 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 
-var PORT = 3001;
+var PORT = process.env.PORT || 3000;
 
 app.all('/*', function (req, res) {
-  res.send('\
-    <!DOCTYPE html>\
-    <html>\
-      <head>\
-        <title>Webpack Integration</title>\
-        <script src="polyfills.bundle.js"></script>\
-        <script src="main.bundle.js"></script>\
-      </head>\
-      <body></body>\
-    </html>\
-  ');
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 app.listen(PORT, function () {
