@@ -63,7 +63,7 @@ module.exports = {
       { test: /\.css$/,   loader: 'raw-loader' },
 
       // support for .html as raw text
-      { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('src/index.html') ] }
+      { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('dist/index.html') ] }
 
       // if you add a loader include the resolve file extension above
     ]
@@ -75,7 +75,7 @@ module.exports = {
     // static assets
     new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
     // generating html
-    new HtmlWebpackPlugin({ template: 'src/index.html' }),
+    new HtmlWebpackPlugin({ template: 'dist/index.html' }),
     // replace
     new webpack.DefinePlugin({
       'process.env': {
@@ -95,7 +95,6 @@ module.exports = {
   devServer: {
     port: metadata.port,
     host: metadata.host,
-    // contentBase: 'src/',
     historyApiFallback: true,
     watchOptions: { aggregateTimeout: 300, poll: 1000 }
   },
