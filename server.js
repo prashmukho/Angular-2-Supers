@@ -1,19 +1,18 @@
 var express = require('express');
 var app = express();
 
-var PORT = process.env.PORT || 3000;
+var PORT = 3001;
 
-app.get('/', function (req, res) {
+app.all('/*', function (req, res) {
   res.send('\
     <!DOCTYPE html>\
     <html>\
       <head>\
         <title>Webpack Integration</title>\
+        <script src="polyfills.bundle.js"></script>\
+        <script src="main.bundle.js"></script>\
       </head>\
-      <body>\
-        <h1>Hello from webpack dev server!</h1>\
-        <script src="bundle.js"></script>\
-      </body>\
+      <body></body>\
     </html>\
   ');
 });
