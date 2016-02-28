@@ -1,6 +1,6 @@
 export class Villain {
   constructor(
-    private _id: number, 
+    public id: number, 
     public name: string,
     public power: string
   ) {}

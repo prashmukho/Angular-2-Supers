@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {VillainListComponent} from './villain-list.component'
+import {VillainListComponent} from './villain-list.component';
 import {VillainService} from './villain.service';
 
 @Component ({
