@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {VillainsComponent} from './villains.component';
+import {VillainsComponent} from './villains/villains.component';
 
 @Component({
   selector: 'my-app',
