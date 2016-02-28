@@ -3,7 +3,6 @@
  */
 import {provide, enableProdMode} from 'angular2/core';
 import {bootstrap, ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/browser';
-import {ROUTER_PROVIDERS} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 
 const ENV_PROVIDERS = [];
@@ -27,8 +26,7 @@ import {AppComponent} from './app/app.component';
 document.addEventListener('DOMContentLoaded', function main() {
   bootstrap(AppComponent, [
     ...ENV_PROVIDERS,
-    ...HTTP_PROVIDERS,
-    ...ROUTER_PROVIDERS
+    ...HTTP_PROVIDERS
   ])
   .catch(err => console.error(err));
 });
@@ -51,8 +49,7 @@ if (module.hot) {
 // module but cannot rerender it
   bootstrap(AppComponent, [
     ...ENV_PROVIDERS,
-    ...HTTP_PROVIDERS,
-    ...ROUTER_PROVIDERS
+    ...HTTP_PROVIDERS
   ])
   .catch(err => console.error(err));
 

@@ -1,24 +1,18 @@
 import {Component, OnInit} from 'angular2/core';
+import {RouteParams, Router} from 'angular2/router';
 import {Villain} from './villain';
-import {VillainDetailComponent} from './villain-detail.component';
 import {VillainService} from './villain.service';
 
 @Component({
-  selector: 'villain-list',
   template: `
-    <div>
-      <ul class='villain-list'>
-        <li *ngFor="#villain of villains" 
-          (click)="_selectVillain(villain)"
-          class="villain-list-item" [class.selected]="_isSelected(villain)">
-          {{ villain.name }}
-        </li>
-      </ul>
-      <div *ngIf="_selectedVillain">
-        <villain-detail [villain]="_selectedVillain"></villain-detail>
-        <button type="button" (click)="_clearSelection()">Clear</button>
-      </div>
-    </div>
+    <h2>Here, there be baddies:</h2>
+    <ul class='villain-list'>
+      <li *ngFor="#villain of villains" 
+        (click)="viewVillainDetails(villain.id)"
+        class="villain-list-item" [class.selected]="isSelected(villain.id)">
+        {{ villain.name }}
+      </li>
+    </ul>
   `,
   styles: [`
     .villain-list { 
@@ -38,31 +32,36 @@ import {VillainService} from './villain.service';
       line-height: 1.6em;
       border-radius: 4px;
     }
-  `],
-  directives: [VillainDetailComponent]
+    .villain-list-item.selected {
+      color: blue;
+    }
+  `]
 })
 export class VillainListComponent implements OnInit {
   villains: Villain[];
+  selectedId: number; // currently unused
 
-  constructor(private _villainService: VillainService) {}
+  constructor(
+    private _villainService: VillainService,
+    private _routeParams: RouteParams,
+    private _router: Router
+  ) {}
 
   ngOnInit() {
+    let id = +this._routeParams.get('id');
+    if (id)
+      this._villainService.getVillain(id)
+        .then(villain => this.selectedId = villain.id);
     this._villainService.getVillains()
       .then(villains => this.villains = villains);
   }
 
-  private _selectedVillain: Villain;
-
-  private _selectVillain(villain: Villain) {
-    this._selectedVillain = villain;
+  viewVillainDetails(id: number): void {
+    let link = ['VillainDetail', { id: id }];
+    this._router.navigate(link);
   }
 
-  private _isSelected(villain: Villain) {
-      return this._selectedVillain && 
-             this._selectedVillain.id === villain.id;
-  }
-
-  private _clearSelection() {
-    this._selectedVillain = null;
+  isSelected(id: number): boolean { 
+    return this.selectedId === id; // for now
   }
 }

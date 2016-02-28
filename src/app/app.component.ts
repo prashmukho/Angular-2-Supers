@@ -1,12 +1,27 @@
 import {Component} from 'angular2/core';
+import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {VillainsComponent} from './villains/villains.component';
 
 @Component({
   selector: 'my-app',
   template: `
-    <h1>Seeds of Destruction</h1>
-    <villains></villains>
+    <h1>{{ title }}</h1>
+    <nav>
+      <a [routerLink]="['VillainsCenter']">Villains Center</a>
+    </nav>
+    <router-outlet></router-outlet>
   `,
-  directives: [VillainsComponent]
+  directives: [ROUTER_DIRECTIVES],
+  providers: [ROUTER_PROVIDERS]
 })
-export class AppComponent { }
+@RouteConfig([
+  { 
+    path: '/villains/...', 
+    name: 'VillainsCenter', 
+    component: VillainsComponent,
+    useAsDefault: true
+  }
+])
+export class AppComponent { 
+  title = 'Seeds of Destruction';
+}
