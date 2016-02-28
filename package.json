@@ -2,7 +2,6 @@
   "name": "angular2-webpack-starter",
   "license": "MIT",
   "scripts": {
-
     "server:dev": "webpack-dev-server --progress --colors",
     "start": "NODE_PATH=$NODE_PATH:./src node server & npm run server:dev",
     "typings-install": "typings install",

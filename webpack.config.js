@@ -1,14 +1,12 @@
-// @AngularClass
-
-/*
- * Helper: root(), and rootDir() are defined at the bottom
- */
 var path = require('path');
 var webpack = require('webpack');
-// var CopyWebpackPlugin  = require('copy-webpack-plugin');
-var HtmlWebpackPlugin  = require('html-webpack-plugin');
-var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
+// for assets (not needed as there are no assets)
+// var CopyWebpackPlugin  = require('copy-webpack-plugin');
+// for index.html template (not needed as actual file is in dist/ and served by NodeJS)
+// var HtmlWebpackPlugin  = require('html-webpack-plugin');
+
+var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 var metadata = {
   title: 'My Angular2 App with Webpack',
   baseUrl: '/',
@@ -16,9 +14,13 @@ var metadata = {
   port: 8080,
   ENV: ENV
 };
-/*
- * Config
- */
+// for inline autorefresh of page with NodeJS API
+var devServerEntry = [
+  'webpack-dev-server/client?http://' + metadata.host + ':' + metadata.port + '/',
+  'webpack/hot/only-dev-server'
+];
+
+// CONFIG:
 module.exports = {
   // static data for index.html
   metadata: metadata,
@@ -27,21 +29,13 @@ module.exports = {
   debug: true,
   // cache: false,
 
-  // our angular app
+  // angular app bundles
   entry: { 
-    'polyfills': [
-      'webpack-dev-server/client?http://127.0.0.1:8080/',
-      'webpack/hot/only-dev-server',
-      './src/polyfills.ts'
-    ],
-    'main': [
-      'webpack-dev-server/client?http://127.0.0.1:8080/',
-      'webpack/hot/only-dev-server',
-      './src/main.ts'
-    ] 
+    'polyfills': devServerEntry.concat(['./src/polyfills.ts']),
+    'main': devServerEntry.concat(['./src/main.ts'])
   },
 
-  // Config for our build files
+  // build files
   output: {
     path: root('dist'),
     filename: '[name].bundle.js',
@@ -51,21 +45,22 @@ module.exports = {
 
   resolve: {
     // ensure loader extensions match
-    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async') // ensure .async.ts etc also works
+    // ensure .async.ts etc also works
+    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async') 
   },
 
   module: {
     preLoaders: [
       // { test: /\.ts$/, loader: 'tslint-loader', exclude: [ root('node_modules') ] },
-      // TODO(gdi2290): `exclude: [ root('node_modules/rxjs') ]` fixed with rxjs 5 beta.2 release
+      // `exclude: [ root('node_modules/rxjs') ]` fixed with rxjs 5 beta.2 release
       { test: /\.js$/, loader: "source-map-loader", exclude: [ root('node_modules/rxjs') ] }
     ],
     loaders: [
       // Support Angular 2 async routes via .async.ts
-      { test: /\.async\.ts$/, loaders: ['es6-promise-loader', 'ts-loader'], exclude: [ /\.(spec|e2e)\.ts$/ ] },
+      { test: /\.async\.ts$/, loaders: ['es6-promise-loader', 'ts-loader'] },
 
       // Support for .ts files.
-      { test: /\.ts$/, loader: 'ts-loader', exclude: [ /\.(spec|e2e|async)\.ts$/ ] },
+      { test: /\.ts$/, loader: 'ts-loader' },
 
       // Support for *.json files.
       { test: /\.json$/,  loader: 'json-loader' },
@@ -91,18 +86,18 @@ module.exports = {
     // new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
     // generating html
     // new HtmlWebpackPlugin({ template: 'dist/index.html' }),
-    // replace
-    // new webpack.DefinePlugin({
-    //   'process.env': {
-    //     'ENV': JSON.stringify(metadata.ENV),
-    //     'NODE_ENV': JSON.stringify(metadata.ENV)
-    //   }
-    // })
+
+    new webpack.DefinePlugin({
+      'process.env': {
+        'ENV': JSON.stringify(metadata.ENV),
+        'NODE_ENV': JSON.stringify(metadata.ENV)
+      }
+    }),
     
     // inline hot module reload with NodeJS API
     new webpack.HotModuleReplacementPlugin(),
     // used with webpack/hot/only-dev-server entry point for autorefresh
-    new webpack.NoErrorsPlugin() 
+    new webpack.NoErrorsPlugin()
   ],
 
   // Other module loader config
@@ -133,8 +128,7 @@ module.exports = {
   }
 };
 
-// Helper functions
-
+// HELPERS
 function root(args) {
   args = Array.prototype.slice.call(arguments, 0);
   return path.join.apply(path, [__dirname].concat(args));
@@ -149,7 +143,4 @@ function prepend(extensions, args) {
     }));
   }, ['']);
 }
-function rootNode(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return root.apply(path, ['node_modules'].concat(args));
-}
+

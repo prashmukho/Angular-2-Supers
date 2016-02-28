@@ -3,15 +3,15 @@
  */
 import {provide, enableProdMode} from 'angular2/core';
 import {bootstrap, ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/browser';
-import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+import {ROUTER_PROVIDERS} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 
 const ENV_PROVIDERS = [];
 
 if ('production' === process.env.ENV) {
-    enableProdMode();
+  enableProdMode();
 } else {
-    ENV_PROVIDERS.push(ELEMENT_PROBE_PROVIDERS);
+  ENV_PROVIDERS.push(ELEMENT_PROBE_PROVIDERS);
 }
 
 /*
@@ -21,17 +21,16 @@ if ('production' === process.env.ENV) {
 import {AppComponent} from './app/app.component';
 
 /*
- * Bootstrap our Angular app with a top level component `App` and inject
- * our Services and Providers into Angular's dependency injection
+ * Bootstrap our Angular app with a top level component `AppComponent` and
+ * inject our Services and Providers into Angular's dependency injection
  */
 document.addEventListener('DOMContentLoaded', function main() {
-    bootstrap(AppComponent, [
+  bootstrap(AppComponent, [
     ...ENV_PROVIDERS,
     ...HTTP_PROVIDERS,
-    ...ROUTER_PROVIDERS,
-    provide(LocationStrategy, { useClass: HashLocationStrategy })
-    ])
-    .catch(err => console.error(err));
+    ...ROUTER_PROVIDERS
+  ])
+  .catch(err => console.error(err));
 });
 
 
@@ -47,18 +46,19 @@ if (module.hot) {
 // bootstrap must not be called after DOMContentLoaded,
 // otherwise it cannot be rerenderd after module replacement
 //
-// for testing try to comment the bootstrap function,
-// open the dev tools and you'll see the reloader is replacing the module but cannot rerender it
+// for testing, comment the bootstrap function,
+// open the dev tools and you'll see the reloader is replacing the 
+// module but cannot rerender it
   bootstrap(AppComponent, [
     ...ENV_PROVIDERS,
     ...HTTP_PROVIDERS,
-    ...ROUTER_PROVIDERS,
-    provide(LocationStrategy, { useClass: HashLocationStrategy })
-    ])
-    .catch(err => console.error(err));
+    ...ROUTER_PROVIDERS
+  ])
+  .catch(err => console.error(err));
 
   module.hot.accept();
 }
 
-// For vendors for example jQuery, Lodash, angular2-jwt just import them anywhere in your app
-// Also see custom_typings.d.ts as you also need to do `typings install x` where `x` is your module
+// For vendors for example jQuery, Lodash, angular2-jwt just import them 
+// anywhere in your app. Also see custom_typings.d.ts as you also need to 
+// do `typings install x` where `x` is your module
