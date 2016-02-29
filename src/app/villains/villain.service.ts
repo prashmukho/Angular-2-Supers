@@ -1,5 +1,5 @@
 import {Injectable} from 'angular2/core';
-import {Villain} from './villain'
+import {Villain} from './villain';
 import {VILLAINS} from './mock-villains';
 
 @Injectable()

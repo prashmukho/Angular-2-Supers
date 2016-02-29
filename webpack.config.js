@@ -51,16 +51,24 @@ module.exports = {
 
   module: {
     preLoaders: [
-      // { test: /\.ts$/, loader: 'tslint-loader', exclude: [ root('node_modules') ] },
-      // `exclude: [ root('node_modules/rxjs') ]` fixed with rxjs 5 beta.2 release
+      // `exclude: [ root('node_modules/rxjs') ]` to prevent
+      //    WARNING in ./~/rxjs/...
+      //    Cannot find source file '...': Error: Cannot resolve 'file' or 'directory'
       { test: /\.js$/, loader: "source-map-loader", exclude: [ root('node_modules/rxjs') ] }
     ],
     loaders: [
       // Support Angular 2 async routes via .async.ts
-      { test: /\.async\.ts$/, loaders: ['es6-promise-loader', 'ts-loader'] },
+      { 
+        test: /\.async\.ts$/, 
+        loaders: ['es6-promise-loader', 'ts-loader'], 
+        exclude: [ /\.(spec|e2e)\.ts$/ ] 
+      },
 
       // Support for .ts files.
-      { test: /\.ts$/, loader: 'ts-loader' },
+      { 
+        test: /\.ts$/, loader: 'ts-loader', 
+        exclude: [ /\.(spec|e2e|async)\.ts$/ ] 
+      },
 
       // Support for *.json files.
       { test: /\.json$/,  loader: 'json-loader' },
