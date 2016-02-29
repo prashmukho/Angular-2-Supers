@@ -25,8 +25,7 @@ import {AppComponent} from './app/app.component';
  */
 document.addEventListener('DOMContentLoaded', function main() {
   bootstrap(AppComponent, [
-    ...ENV_PROVIDERS,
-    ...HTTP_PROVIDERS
+    ENV_PROVIDERS
   ])
   .catch(err => console.error(err));
 });
@@ -48,8 +47,7 @@ if (module.hot) {
 // open the dev tools and you'll see the reloader is replacing the 
 // module but cannot rerender it
   bootstrap(AppComponent, [
-    ...ENV_PROVIDERS,
-    ...HTTP_PROVIDERS
+    ENV_PROVIDERS
   ])
   .catch(err => console.error(err));
 
