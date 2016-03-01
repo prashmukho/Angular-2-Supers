@@ -13,11 +13,11 @@ module.exports = {
   devtool: 'inline-source-map',
   module: {
     preLoaders: [
-      {
-        test: /\.ts$/,
-        loader: 'tslint-loader',
-        exclude: [ root('node_modules') ]
-      },
+      // {
+      //   test: /\.ts$/,
+      //   loader: 'tslint-loader',
+      //   exclude: [ root('node_modules') ]
+      // },
       {
         test: /\.js$/,
         loader: "source-map-loader",

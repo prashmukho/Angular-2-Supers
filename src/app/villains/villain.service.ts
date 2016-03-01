@@ -4,11 +4,11 @@ import {VILLAINS} from './mock-villains';
 
 @Injectable()
 export class VillainService {
-  getVillains() {
+  getVillains(): Promise<Villain[]> {
     return Promise.resolve(VILLAINS);
   }
 
-  getVillain(id: number) {
+  getVillain(id: number): Promise<Villain> {
     return Promise.resolve(VILLAINS).then(
       villains => villains.filter(villain => villain.id === id)[0]
     );
