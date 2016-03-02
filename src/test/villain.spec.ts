@@ -11,7 +11,7 @@ describe('villain object', () => {
     expect(this.villain.name).toEqual('Magneto');
   });
   
-  it('has the id given in the constructor', () => {
+  it('has the power given in the constructor', () => {
     expect(this.villain.power).toEqual('Magnetism');
   });
 
