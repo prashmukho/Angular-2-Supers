@@ -32,7 +32,7 @@ module.exports = {
   // angular app bundles
   entry: { 
     'polyfills': devServerEntry.concat(['./src/polyfills.ts']),
-    'main': devServerEntry.concat(['./src/main.ts'])
+    'main': devServerEntry.concat(['bootstrap-loader', './src/main.ts'])
   },
 
   // build files
@@ -46,7 +46,8 @@ module.exports = {
   resolve: {
     // ensure loader extensions match
     // ensure .async.ts etc also works
-    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async') 
+    // prepend adds '' too
+    extensions: prepend(['.ts','.js','.json','.scss','.html'], '.async')
   },
 
   module: {
@@ -73,11 +74,28 @@ module.exports = {
       // Support for *.json files.
       { test: /\.json$/,  loader: 'json-loader' },
 
-      // Support for CSS as raw text
-      { test: /\.css$/,   loader: 'raw-loader' },
-
       // support for .html as raw text
-      { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('dist/index.html') ] }
+      { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('dist/index.html') ] },
+      
+      {
+        test: /\.(woff2?|ttf|eot|svg)$/,
+        loader: 'url?limit=10000'
+      },
+
+      {             
+        test: /\.scss$/,
+        loaders: [
+            'style',
+            'css',
+            'autoprefixer?browsers=last 3 versions',
+            'sass?outputStyle=expanded'
+        ] 
+      },
+
+      {
+        test: /bootstrap-sass\/assets\/javascripts\//,
+        loader: 'imports?jQuery=jquery'
+      }
 
       // if you add a loader include the resolve file extension above
     ]
@@ -100,6 +118,11 @@ module.exports = {
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV)
       }
+    }),
+
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
     }),
     
     // inline hot module reload with NodeJS API
