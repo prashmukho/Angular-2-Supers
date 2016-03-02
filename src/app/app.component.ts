@@ -4,14 +4,9 @@ import {VillainsComponent} from './villains/villains.component';
 import {DialogService} from './dialog.service';
 
 @Component({
-    selector: 'my-app',
-    template: `
-    <h1>{{ title }}</h1>
-    <nav>
-      <a [routerLink]="['VillainsCenter']">Villains Center</a>
-    </nav>
-    <router-outlet></router-outlet>
-  `,
+  selector: 'my-app',
+  template: require('./app-component.html'),
+  // styles: [require(./app-component.scss)],
   directives: [ROUTER_DIRECTIVES],
   providers: [ROUTER_PROVIDERS, DialogService]
 })

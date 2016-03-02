@@ -4,42 +4,16 @@ import {Villain} from './villain';
 import {VillainService} from './villain.service';
 
 @Component({
-  template: `
-    <h2>Here, there be baddies:</h2>
-    <ul class='villain-list'>
-      <li *ngFor="#villain of villains" 
-        (click)="viewVillainDetails(villain.id)"
-        class="villain-list-item" [class.selected]="isSelected(villain.id)">
-        {{ villain.name }}
-      </li>
-    </ul>
-  `,
+  template: require('./templates/villain-list-component.html'),
   styles: [`
-    .villain-list { 
-      margin: 0 0 2em 0;
-      list-style-type: none;
-      padding: 0;
-      width: 8em; 
-    }
-    .villain-list-item {
-      cursor: pointer;
-      position: relative;
-      left: 0;
-      background-color: #EEE;
-      margin: .5em;
-      padding: .3em .5em;
-      height: 1.6em;
-      line-height: 1.6em;
-      border-radius: 4px;
-    }
-    .villain-list-item.selected {
+    .selected {
       color: blue;
     }
   `]
 })
 export class VillainListComponent implements OnInit {
   villains: Villain[];
-  selectedId: number; // currently unused
+  selectedId: number;
 
   constructor(
     private _villainService: VillainService,
@@ -48,20 +22,35 @@ export class VillainListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let id = +this._routeParams.get('id');
-    if (id)
-      this._villainService.getVillain(id)
-        .then(villain => this.selectedId = villain.id);
     this._villainService.getVillains()
-      .then(villains => this.villains = villains);
-  }
-
-  viewVillainDetails(id: number): void {
-    let link = ['VillainDetail', { id: id }];
-    this._router.navigate(link);
+      .then(villains => {
+        this.villains = villains
+        // only present when redirected from villain-detail-component for bad 'id'
+        let id = +this._routeParams.get('id');
+        if (id) this.selectedId = this.villains.filter(v => v.id === id)[0].id;
+        // only present when coming from new-villain-detail-component upon 'save'
+        let newVillain: any = this._routeParams.get('newVillain');
+        if (newVillain) {
+          newVillain = JSON.parse(decodeURIComponent(newVillain));
+          this.villains.push(newVillain);
+          this.selectedId = newVillain.id;
+        }
+      });
   }
 
   isSelected(id: number): boolean { 
-    return this.selectedId === id; // for now
+    return this.selectedId === id;
+  }
+  
+  viewVillain(id: number): void {
+    this._goTo('VillainDetail', { id: id });
+  }
+
+  newVillain() {
+    this._goTo('NewVillainDetail', { nextId: this.villains.length + 1 });
+  }
+
+  private _goTo(routeName, params) {
+    this._router.navigate([routeName, params]);
   }
 }
