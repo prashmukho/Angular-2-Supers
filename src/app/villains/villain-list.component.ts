@@ -24,7 +24,7 @@ export class VillainListComponent implements OnInit {
   ngOnInit() {
     this._villainService.getVillains()
       .then(villains => {
-        this.villains = villains
+        this.villains = villains;
         // only present when redirected from villain-detail-component for bad 'id'
         let id = +this._routeParams.get('id');
         if (id) this.selectedId = this.villains.filter(v => v.id === id)[0].id;

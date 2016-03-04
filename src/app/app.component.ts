@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {VillainsComponent} from './villains/villains.component';
+// import {LoginComponent} from './login.component';
 import {DialogService} from './dialog.service';
 
 @Component({
@@ -16,7 +17,12 @@ import {DialogService} from './dialog.service';
     name: 'VillainsCenter', 
     component: VillainsComponent,
     useAsDefault: true
-  }
+  },
+  // { 
+  //   path: '/login', 
+  //   name: 'Login',
+  //   component: LoginComponent
+  // }
 ])
 export class AppComponent { 
   title = 'Seeds of Destruction';
