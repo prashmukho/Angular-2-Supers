@@ -4,11 +4,10 @@
     (click)="newVillain()">
     Add
   </button>
-  <br>
   <div class="list-group">
     <a *ngFor="#villain of villains" 
-      (click)="viewVillain(villain.id)"
-      [class.selected]="isSelected(villain.id)" 
+      (click)="viewVillain(villain)"
+      [class.selected]="isSelected(villain['_id'])" 
       class="list-group-item text-center">
       {{ villain.name }}
     </a>

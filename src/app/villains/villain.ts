@@ -1,8 +1,6 @@
-export class Villain {
-  constructor(
-    public id: number, 
-    public name: string,
-    public power: string,
-    public alias?: string
-  ) { }
+export interface Villain {
+  _id: string,
+  name: string,
+  power: string,
+  alias?: string
 }

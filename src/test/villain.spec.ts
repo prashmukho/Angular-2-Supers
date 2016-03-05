@@ -1,12 +1,14 @@
-import {Villain} from '../app/villains/villain';
-
 describe('villain object', () => {
-  beforeEach(() => this.villain = new Villain(1, 'Magneto', 'Magnetism', 'Max Eisenhardt'));
-
-  it('has the id given to the constructor', () => {
-    expect(this.villain.id).toEqual(1);
+  beforeEach(() => {
+    // TODO: getVillain(<some id>) after testing  VillainService
+    this.villain = { name: 'Magneto', power: 'Magnetism', alias: 'Max Eisenhardt' }
   });
 
+  // TODO: get a record from the DB for testing
+
+  // TODO: add _id check
+
+  // these are trivial for now
   it('has the name given to its constructor', () => {
     expect(this.villain.name).toEqual('Magneto');
   });

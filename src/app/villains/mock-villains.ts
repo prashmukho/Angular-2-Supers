@@ -1,8 +1,8 @@
 import {Villain} from './villain';
 
 export var VILLAINS: Villain[] = [
-  new Villain(1, "Shai'tan", 'Anti-life Equation', 'The Dark One'),
-  new Villain(2, 'Ishmael', 'Pall of Doom', 'Moridin'),
-  new Villain(3, 'Demandred', 'Demonic Coercion', 'Gaebril'),
-  new Villain(4, 'Semirhage', 'Crippling Agony', 'Anath Dorje')
+  { _id: '1a', name: "Shai'tan", power: 'Anti-life Equation', alias: 'The Dark One' },
+  { _id: '2b', name: 'Ishmael', power: 'Pall of Doom', alias: 'Moridin' },
+  { _id: '3c', name: 'Demandred', power: 'Demonic Coercion', alias: 'Gaebril' },
+  { _id: '4d', name: 'Semirhage', power: 'Crippling Agony', alias: 'Anath Dorje' }
 ];

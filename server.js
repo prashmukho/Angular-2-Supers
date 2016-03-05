@@ -1,10 +1,12 @@
 var path = require('path');
 var express = require('express');
 var stormpath = require('express-stormpath');
+var bodyParser = require('body-parser');
 
 var PORT = process.env.PORT || 3000;
 
 var app = express();
+app.use(bodyParser.json());
 app.use(stormpath.init(app, {
   web: {
     register: {
@@ -21,7 +23,7 @@ app.use(stormpath.init(app, {
     },
     produces: ['application/json']
   },
-  debug: 'info, error'
+  debug: (process.env === 'development' ? 'info, error' : 'error')
 }));
 
 // Once Stormpath has initialized itself, start your web server!
@@ -30,6 +32,9 @@ app.on('stormpath.ready', function () {
   app.listen(PORT);
 });
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+var routes = require('./src/server/routes');
+routes(app);
+
+app.all('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 });

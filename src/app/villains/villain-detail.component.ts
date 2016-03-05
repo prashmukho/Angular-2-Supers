@@ -21,15 +21,23 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
   ) {}
 
   ngOnInit() {
-    let id = +this._routeParams.get('id');
+    // let villain = this._routeParams.get('villain');
+    // if (villain) {
+    //   return this.villain = JSON.parse(decodeURIComponent(villain));
+    // }
+
+    let id = this._routeParams.get('id');
     this._villainService.getVillain(id)
-      .then(villain => {
-        if (!villain) {
-          this._goTo('VillainList', {});
-          return false;
-        }
-        this.villain = villain;
-      });
+      .subscribe(
+        villain => {
+          if (!villain) {
+            this._goTo('VillainList', {});
+            return false;
+          }
+          this.villain = villain;
+        },
+        error => console.error(error)
+      );
   }
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
@@ -40,13 +48,21 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
     return this._dialogService.confirm('Ignore changes?');
   }
 
-  cancel(ngFormElement) {
-    this.edited = ngFormElement.dirty;
-    this._goTo('VillainList', { id: this.villain.id });
+  cancel(edited: boolean) {
+    this.edited = edited;
+    this._goTo('VillainList', { id: this.villain['_id'] });
   }
       
   save() {
-    this._goTo('VillainList', { id: this.villain.id });
+    this.edited = false;
+    this._villainService.updateVillain(this.villain)
+      .subscribe(
+        (id: string) => {
+          console.log('updated...', id);
+          this._goTo('VillainList', { id: id });
+        },
+        error => console.error(error)
+      );
   }
 
   private _goTo(routeName, params) {

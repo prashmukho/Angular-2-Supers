@@ -13,7 +13,7 @@ import {VillainService} from './villain.service';
 })
 export class VillainListComponent implements OnInit {
   villains: Villain[];
-  selectedId: number;
+  selectedId: string;
 
   constructor(
     private _villainService: VillainService,
@@ -23,31 +23,30 @@ export class VillainListComponent implements OnInit {
 
   ngOnInit() {
     this._villainService.getVillains()
-      .then(villains => {
-        this.villains = villains;
-        // only present when redirected from villain-detail-component for bad 'id'
-        let id = +this._routeParams.get('id');
-        if (id) this.selectedId = this.villains.filter(v => v.id === id)[0].id;
-        // only present when coming from new-villain-detail-component upon 'save'
-        let newVillain: any = this._routeParams.get('newVillain');
-        if (newVillain) {
-          newVillain = JSON.parse(decodeURIComponent(newVillain));
-          this.villains.push(newVillain);
-          this.selectedId = newVillain.id;
-        }
-      });
+      .subscribe(
+        villains => {
+          this.villains = villains;
+
+          let id = this._routeParams.get('id');
+          if (id) this.selectedId = id;
+        },
+        error => console.error(error)
+      );
   }
 
-  isSelected(id: number): boolean { 
+  isSelected(id: string): boolean { 
     return this.selectedId === id;
   }
   
-  viewVillain(id: number): void {
-    this._goTo('VillainDetail', { id: id });
+  viewVillain(villain: Villain): void {
+    this._goTo('VillainDetail', {
+      id: villain['_id'],
+      // villain: JSON.stringify(villain)
+    });
   }
 
   newVillain() {
-    this._goTo('NewVillainDetail', { nextId: this.villains.length + 1 });
+    this._goTo('NewVillainDetail', {});
   }
 
   private _goTo(routeName, params) {
