@@ -6,7 +6,6 @@ import {NewVillainDetailComponent} from './new-villain-detail.component';
 import {VillainService} from './villain.service';
 
 @Component({
-  selector: 'villains',
   template: `
     <router-outlet></router-outlet>
   `,
