@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Villain = require('server/db/init').Villain;
+var Villain = require('../db/init').Villain;
 
 var express = require('express');
 var router = express.Router();
