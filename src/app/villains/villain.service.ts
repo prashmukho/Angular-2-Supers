@@ -2,16 +2,11 @@ import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import * as Rx from "rxjs/Rx"
 import {Headers, RequestOptions} from 'angular2/http';
-
 import {Villain} from './villain';
 
 @Injectable()
 export class VillainService {
   constructor (private _http: Http) {}
-
-  // getVillains(): Promise<Villain[]> {
-  //   return Promise.resolve(VILLAINS);
-  // }
 
   getVillain(id: string): Rx.Observable<Villain> {
     return this._http.get(`api/v1/villains/${id}`)
