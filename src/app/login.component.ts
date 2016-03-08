@@ -1,7 +1,7 @@
 import {Component, OnInit} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {UserService} from './user.service';
-import {EnvService} from '../env.service';
+import {EnvService} from './env.service';
 
 interface Login {
   username: string,
@@ -10,7 +10,7 @@ interface Login {
 
 @Component({
   selector: 'login-form',
-  template: require('./templates/user-form.html')
+  template: require('./user-form.html')
 })
 export class LoginComponent implements OnInit {
   user: Login = {
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _userService: UserService,
     private _envService: EnvService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this._envService.getFbAppID()

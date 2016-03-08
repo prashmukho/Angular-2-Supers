@@ -3,7 +3,8 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS}    from 'angular2/http';
 
 import {VillainsComponent} from './villains/villains.component';
-import {UsersComponent} from './users/users.component';
+import {LoginComponent} from './login.component';
+import {UserService} from './user.service';
 import {DialogService} from './dialog.service';
 import {EnvService} from './env.service';
 
@@ -16,7 +17,8 @@ import {EnvService} from './env.service';
     ROUTER_PROVIDERS, 
     HTTP_PROVIDERS, 
     DialogService,
-    EnvService
+    EnvService,
+    UserService
   ]
 })
 @RouteConfig([
@@ -27,9 +29,9 @@ import {EnvService} from './env.service';
     useAsDefault: true
   },
   { 
-    path: '/users', 
-    name: 'UsersCenter',
-    component: UsersComponent
+    path: '/signin', 
+    name: 'SignIn',
+    component: LoginComponent
   }
 ])
 export class AppComponent { 
