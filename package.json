@@ -3,8 +3,8 @@
   "license": "MIT",
   "scripts": {
     "test": "karma start",
-    "server:dev": "webpack-dev-server --progress --colors",
-    "start": "NODE_PATH=$NODE_PATH:./src node server & npm run server:dev",
+    "dev-server": "webpack-dev-server --progress --colors",
+    "start": "source .env & node server & npm run dev-server",
     "typings-install": "typings install",
     "postinstall": "npm run typings-install"
   },
