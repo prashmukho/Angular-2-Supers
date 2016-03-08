@@ -7,16 +7,19 @@ var PORT = process.env.PORT || 3000;
 
 var app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(stormpath.init(app, {
   web: {
     register: {
       form: {
         fields: {
           givenName: {
-            required: false
+            required: false,
+            // enabled: false
           },
           surname: {
-            required: false
+            required: false,
+            // enabled: false
           }
         }
       }
