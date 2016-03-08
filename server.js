@@ -1,3 +1,4 @@
+require('dotenv').config();
 var path = require('path');
 var express = require('express');
 var stormpath = require('express-stormpath');

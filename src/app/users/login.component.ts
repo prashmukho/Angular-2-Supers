@@ -1,9 +1,7 @@
-import {Component, Output, EventEmitter, OnInit} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
-import * as Rx from "rxjs/Rx"
-import {Headers, RequestOptions} from 'angular2/http';
-import {Router} from 'angular2/router'
-import {UserService} from './user.service'
+import {Component, OnInit} from 'angular2/core';
+import {Router} from 'angular2/router';
+import {UserService} from './user.service';
+import {EnvService} from '../env.service';
 
 interface Login {
   username: string,
@@ -20,14 +18,26 @@ export class LoginComponent implements OnInit {
     password: ''
   };
 
-  constructor(private _userService: UserService, private _router: Router) { }
+  type: string = 'login'; // default
+
+  constructor( 
+    private _router: Router,
+    private _userService: UserService,
+    private _envService: EnvService
+  ) { }
 
   ngOnInit() {
+    this._envService.getFbAppID()
+      .subscribe(
+        data => console.log(data),
+        error => console.log(error)
+      );
+
     console.log('Sign in...');
   }
 
   signIn() {
-    this._userService.signIn(this.user.username, this.user.password)
+    this._userService.signIn(this.user)
       .subscribe(
         data => {
           console.log(`logged in as ${data.account.email}`);

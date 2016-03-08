@@ -7,10 +7,10 @@ import {Headers, RequestOptions} from 'angular2/http';
 export class UserService {
   constructor(private _http: Http) {}
 
-  signIn(username: string, password: string) {
+  signIn(user) {
     let body = JSON.stringify({ 
-      login: username, 
-      password: password
+      login: user.username, 
+      password: user.password
     });
     let headers = new Headers({ 
       'Accept': 'application/json',
