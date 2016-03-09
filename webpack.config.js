@@ -1,11 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 
-// for assets (not needed as there are no assets)
-// var CopyWebpackPlugin  = require('copy-webpack-plugin');
-// for index.html template (not needed as actual file is in dist/ and served by NodeJS)
-// var HtmlWebpackPlugin  = require('html-webpack-plugin');
-
 var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 var metadata = {
   title: 'My Angular2 App with Webpack',
@@ -85,11 +80,11 @@ module.exports = {
       {             
         test: /\.scss$/,
         loaders: [
-            'style',
-            'css',
-            'autoprefixer?browsers=last 3 versions',
-            'sass?outputStyle=expanded'
-        ] 
+            'style-loader',
+            'css-loader',
+            'autoprefixer-loader?browsers=last 3 versions',
+            'sass-loader?outputStyle=expanded'
+        ]
       },
 
       {
@@ -108,10 +103,6 @@ module.exports = {
     //   filename: 'polyfills.bundle.js', 
     //   minChunks: Infinity 
     // }),
-    // static assets
-    // new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
-    // generating html
-    // new HtmlWebpackPlugin({ template: 'dist/index.html' }),
 
     new webpack.DefinePlugin({
       'process.env': {
