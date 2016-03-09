@@ -1,0 +1,45 @@
+<h2>{{action}} User</h2>
+<div class='row'>
+  <div class='col-xs-6 col-sm-8 col-md-9 col-lg-10 left-user-col'>
+    <form #userForm="ngForm">
+      <div class="form-group">
+        <label for="username">Email</label>
+        <input type="email" class="form-control" required
+          [(ngModel)]="user.username" 
+          ngControl="username"  #username="ngForm" />
+        <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
+          Email is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" required
+          [(ngModel)]="user.password"
+          ngControl="password"  #password="ngForm" />
+        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+          Password is required
+        </div>
+      </div>
+      <button #signin type="button" class="btn btn-default" 
+        [disabled]="!userForm.form.valid"
+        (click)="signIn(signin)">
+        Sign In
+      </button>
+    </form>
+  </div>
+  <div class='col-xs-6 col-sm-4 col-md-3 col-lg-2'>
+    <h6>One-click login:</h6>
+    <button type='button' id='facebook-login' class='btn btn-default social-login fb-login'>
+      <span><img src='assets/fb-logo-50.png' class='fb-logo' /></span>
+      <span class='fb-text'>Facebook</span>
+    </button><br>
+
+    <!-- <div class="g-signin2"></div> -->
+    <button type='button' id='google-login' class='btn btn-default social-login google-login'>
+      <span><img src='assets/google-logo-46.png' class='google-logo' /></span>
+      <span class='google-text'>Google</span>
+    </button>
+  </div>
+</div>
+
+<div [hidden]="true" class='hiddenClicker'></div>

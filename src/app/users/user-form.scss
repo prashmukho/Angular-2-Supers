@@ -1,0 +1,39 @@
+.social-login {
+  padding: 0;
+  width: 120px;
+
+  &.fb-login {
+    margin-bottom: 8px;
+    background-color: rgb(59,87,157);
+
+    &:hover {
+      color: white;
+      background-color: rgb(59,87,157);   
+    }
+
+    .fb-text {
+      padding-right: 6px;
+      color: white;
+    }
+  }
+
+  &.google-login {
+    &:hover {
+      color: rgb(117,117,117);
+      background-color: white;   
+    }
+
+    .google-text {
+      padding-right: 8px;
+      color: rgb(117,117,117);
+    }
+  }
+
+  .fb-logo, .google-logo {
+    height: 31px;
+  }
+}
+
+.left-user-col {
+  border-right: 1px solid lightgrey;
+}
