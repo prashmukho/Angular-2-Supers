@@ -9,6 +9,7 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/assets', express.static(path.join(__dirname, 'src', 'app', 'assets')));
 app.use(stormpath.init(app, {
   web: {
     register: {
