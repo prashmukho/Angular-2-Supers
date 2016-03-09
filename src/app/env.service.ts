@@ -6,8 +6,14 @@ import * as Rx from "rxjs/Rx";
 export class EnvService {
   constructor(private _http: Http) { }
 
-  getFbAppID(): Rx.Observable<string> {
+  getFbAppID(): Rx.Observable<any> {
     return this._http.get('/env/fbAppID')
+      .map(res => res.json())
+      .catch(this._handleError);
+  }
+
+  getGoogleClientID(): Rx.Observable<any> {
+    return this._http.get('/env/googleClientID')
       .map(res => res.json())
       .catch(this._handleError);
   }
