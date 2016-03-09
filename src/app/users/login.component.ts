@@ -30,14 +30,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this._envService.getFbAppID()
-      .subscribe(
-        data => require('./fb.js')(data.id),
+      .then(
+        id => require('./fb.js')(id),
         error => console.log(error)
       );
 
     this._envService.getGoogleClientID()
-      .subscribe(
-        data => require('./google.js')(data.id),
+      .then(
+        id => require('./google.js')(id),
         error => console.log(error)
       );
 

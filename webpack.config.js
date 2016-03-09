@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var config = require('./config.json');
 
 var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 var metadata = {
@@ -7,7 +8,11 @@ var metadata = {
   baseUrl: '/',
   host: 'localhost',
   port: 8080,
-  ENV: ENV
+  ENV: ENV,
+  KEYS: {
+    'FB_APP_ID': config.KEYS.FB_APP_ID,
+    'GOOGLE_CLIENT_ID': config.KEYS.GOOGLE_CLIENT_ID
+  }
 };
 // for inline autorefresh of page with NodeJS API
 var devServerEntry = [
@@ -107,7 +112,9 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(metadata.ENV),
-        'NODE_ENV': JSON.stringify(metadata.ENV)
+        'NODE_ENV': JSON.stringify(metadata.ENV),
+        'FB_APP_ID': JSON.stringify(metadata.KEYS.FB_APP_ID),
+        'GOOGLE_CLIENT_ID': JSON.stringify(metadata.KEYS.GOOGLE_CLIENT_ID)
       }
     }),
 

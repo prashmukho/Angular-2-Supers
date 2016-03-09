@@ -3,5 +3,5 @@ var keyRoutes = require('./routes/key-routes');
 
 module.exports = function routes(app) {
   app.use('/api/v1', villainsRoutes);
-  app.use('/env', keyRoutes);
+  // app.use('/env', keyRoutes);
 };

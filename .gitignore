@@ -61,3 +61,4 @@ npm-debug.log
 *.swp
 
 .env
+config.json

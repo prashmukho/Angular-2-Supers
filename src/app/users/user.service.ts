@@ -7,7 +7,7 @@ import {Headers, RequestOptions} from 'angular2/http';
 export class UserService {
   constructor(private _http: Http) {}
 
-  signIn(user) {
+  signIn(user: any): Rx.Observable<any> {
     let body = JSON.stringify({ 
       login: user.username, 
       password: user.password

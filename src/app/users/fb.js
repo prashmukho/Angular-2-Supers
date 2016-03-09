@@ -21,7 +21,7 @@ module.exports = function (id) {
         if (response.authResponse) {
           getUserBasic();
         } else {
-         console.error('User aborted.');
+          console.error('User aborted.');
         }
 
         loginBtn.disabled = false;
