@@ -1,7 +1,7 @@
 import {provide, enableProdMode} from 'angular2/core';
 import {bootstrap, ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/browser';
 
-const ENV_PROVIDERS = [];
+let ENV_PROVIDERS = [];
 
 if ('production' === process.env.ENV) {
   enableProdMode();
