@@ -1,7 +1,9 @@
 import {Component, OnInit} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {UserService} from './user.service';
-import {EnvService} from './env.service';
+import {EnvService} from '../env.service';
+
+import './user-form.scss';
 
 interface Login {
   username: string,
@@ -9,8 +11,8 @@ interface Login {
 }
 
 @Component({
-  selector: 'login-form',
-  template: require('./user-form.html')
+  template: require('./user-form.html'),
+  providers: [UserService]
 })
 export class LoginComponent implements OnInit {
   user: Login = {
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
     password: ''
   };
 
-  type: string = 'login'; // default
+  action: string = 'Login'; // default
 
   constructor( 
     private _router: Router,
@@ -29,21 +31,32 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this._envService.getFbAppID()
       .subscribe(
-        data => console.log(data),
+        data => require('./fb.js')(data.id),
         error => console.log(error)
       );
 
-    console.log('Sign in...');
+    this._envService.getGoogleClientID()
+      .subscribe(
+        data => require('./google.js')(data.id),
+        error => console.log(error)
+      );
+
+    console.log('Please sign in...');
   }
 
-  signIn() {
+  signIn(btn) {
+    btn.disabled = true;
+
     this._userService.signIn(this.user)
       .subscribe(
         data => {
           console.log(`logged in as ${data.account.email}`);
           this._router.navigate(['VillainsCenter']);
         },
-        error => console.log(error)
+        error => {
+          console.log(error);
+          btn.disabled = false;
+        }
       );
   }
 }
