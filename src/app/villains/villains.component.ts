@@ -1,9 +1,10 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {VillainListComponent} from './villain-list.component';
 import {VillainDetailComponent} from './villain-detail.component';
 import {NewVillainDetailComponent} from './new-villain-detail.component';
 import {VillainService} from './villain.service';
+import {ActiveLinkService} from '../active-link.service';
 
 @Component({
   template: `
@@ -30,4 +31,10 @@ import {VillainService} from './villain.service';
      component: NewVillainDetailComponent,
   }
 ])
-export class VillainsComponent {}
+export class VillainsComponent implements OnInit {
+  constructor(private _activeLink: ActiveLinkService) {}
+
+  ngOnInit() {
+    this._activeLink.switchLink('VillainsCenter');
+  }
+}

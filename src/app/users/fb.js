@@ -36,7 +36,7 @@ module.exports = function (id, loginConfig) {
       console.log('Successful login for:', response.name);
       loginConfig.active = true;
       loginConfig.email = response.email;
-
+      // console.log('called getUserBasic', JSON.stringify(response));
       $('.post-login').click();
     });
   }

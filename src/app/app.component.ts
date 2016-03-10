@@ -6,28 +6,36 @@ import {VillainsComponent} from './villains/villains.component';
 import {LoginComponent} from './users/login.component';
 import {DialogService} from './dialog.service';
 import {EnvService} from './env.service';
+import {ActiveLinkService} from './active-link.service';
 
 export interface LoginConfig {
   active: boolean,
-  email: string
+  email: string,
+  postLogin: Function
 }
 // const will only prevent changing to another datatype i.e. not an Object
 // properties may still be added
 export const LOGIN_CONFIG: LoginConfig = {
   active: false,
-  email: null
+  email: null,
+  postLogin: (active, email) => {
+    window.localStorage.setItem('user', JSON.stringify({
+      active: active,
+      email: email
+    }));
+  }
 };
 
 @Component({
   selector: 'my-app',
   template: require('./app-component.html'),
-  // styles: [require(./app-component.scss)],
   directives: [ROUTER_DIRECTIVES],
   providers: [
     ROUTER_PROVIDERS, 
     HTTP_PROVIDERS, 
     DialogService,
     EnvService,
+    ActiveLinkService,
     provide('login.config', {useValue: LOGIN_CONFIG})
   ]
 })
@@ -46,7 +54,8 @@ export const LOGIN_CONFIG: LoginConfig = {
 ])
 export class AppComponent { 
   title = 'Seeds of Destruction';
-  currentLink = 'VillainsCenter';
 
-  constructor(@Inject('login.config') public config: LoginConfig) {}
+  constructor(@Inject('login.config') public config: LoginConfig) {
+    window.localStorage.removeItem('user');
+  }
 }

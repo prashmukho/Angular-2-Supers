@@ -4,6 +4,7 @@ import {Router} from 'angular2/router';
 import {LoginConfig} from '../app.component';
 import {UserService} from './user.service';
 import {EnvService} from '../env.service';
+import {ActiveLinkService} from '../active-link.service';
 
 import './user-form.scss';
 
@@ -28,10 +29,12 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _userService: UserService,
     private _envService: EnvService,
+    private _activeLink: ActiveLinkService,
     @Inject('login.config') public config: LoginConfig
   ) {}
 
   ngOnInit() {
+    this._activeLink.switchLink('SignIn');
     console.log('Please sign in...');
 
     this._envService.getFbAppID()
@@ -53,7 +56,10 @@ export class LoginComponent implements OnInit {
     this._userService.signIn(this.user)
       .subscribe(
         data => {
-          console.log(`logged in as ${data.account.email}`);
+          this.config.postLogin(
+            this.config.active = true, 
+            this.config.email = data.account.email
+          );
           this._router.navigate(['VillainsCenter']);
         },
         error => {
@@ -61,5 +67,13 @@ export class LoginComponent implements OnInit {
           btn.disabled = false;
         }
       );
+  }
+
+  socialSignIn() {
+    this.config.postLogin(
+      this.config.active,
+      this.config.email
+    );
+    this._router.navigate(['VillainsCenter']);
   }
 }

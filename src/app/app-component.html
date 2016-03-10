@@ -14,11 +14,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li [class.active]="currentLink === 'VillainsCenter'" (click)="currentLink = 'VillainsCenter'">
-          <a [routerLink]="['VillainsCenter', 'VillainList']">Villains <span class="sr-only">Villains</span></a>
+        <li  id='VillainsCenterLink'>
+          <a [routerLink]="['VillainsCenter', 'VillainList']">
+            Villains <span class="sr-only">Villains</span>
+          </a>
         </li>
-        <li [class.active]="currentLink === 'SignIn'" (click)="currentLink = 'SignIn'">
-          <a [routerLink]="['SignIn']">Sign In <span class="sr-only">Sign In</span></a>
+        <li id='SignInLink'>
+          <a [routerLink]="['SignIn']">{{config.email || 'Sign In'}} <span class="sr-only">
+            {{'Sign In' || 'User Name'}}</span>
+          </a>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
