@@ -1,4 +1,4 @@
-module.exports = function (id) {
+module.exports = function (id, loginConfig) {
   window.fbAsyncInit = function() {
     FB.init({
       appId      : id,
@@ -25,15 +25,19 @@ module.exports = function (id) {
         }
 
         loginBtn.disabled = false;
-      }, {scope: 'email'});
+      }, {scope: 'public_profile,email'});
     });
 
     // FB.logout(function(response) {});
   };
 
   function getUserBasic() {
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
+    FB.api('/me?fields=name,email', function(response) {
+      console.log('Successful login for:', response.name);
+      loginConfig.active = true;
+      loginConfig.email = response.email;
+
+      $('.post-login').click();
     });
   }
 

@@ -1,5 +1,7 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, Inject} from 'angular2/core';
 import {Router} from 'angular2/router';
+
+import {LoginConfig} from '../app.component';
 import {UserService} from './user.service';
 import {EnvService} from '../env.service';
 
@@ -25,13 +27,16 @@ export class LoginComponent implements OnInit {
   constructor( 
     private _router: Router,
     private _userService: UserService,
-    private _envService: EnvService
+    private _envService: EnvService,
+    @Inject('login.config') public config: LoginConfig
   ) {}
 
   ngOnInit() {
+    console.log('Please sign in...');
+
     this._envService.getFbAppID()
       .then(
-        id => require('./fb.js')(id),
+        id => require('./fb.js')(id, this.config),
         error => console.log(error)
       );
 
@@ -40,8 +45,6 @@ export class LoginComponent implements OnInit {
         id => require('./google.js')(id),
         error => console.log(error)
       );
-
-    console.log('Please sign in...');
   }
 
   signIn(btn) {

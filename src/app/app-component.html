@@ -14,12 +14,18 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a [routerLink]="['VillainsCenter', 'VillainList']">Villains <span class="sr-only">Villains</span></a></li>
-        <li><a [routerLink]="['SignIn']">Sign In <span class="sr-only">Login</span></a></li>
+        <li [class.active]="currentLink === 'VillainsCenter'" (click)="currentLink = 'VillainsCenter'">
+          <a [routerLink]="['VillainsCenter', 'VillainList']">Villains <span class="sr-only">Villains</span></a>
+        </li>
+        <li [class.active]="currentLink === 'SignIn'" (click)="currentLink = 'SignIn'">
+          <a [routerLink]="['SignIn']">Sign In <span class="sr-only">Sign In</span></a>
+        </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 <div class='container'>
   <router-outlet></router-outlet>
+  <button *ngIf='config.active' class='btn btn-default'>TEST</button>
 </div>
+

@@ -1,5 +1,7 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, Inject} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
+
+import {LoginConfig} from '../app.component';
 import {Villain} from './villain';
 import {VillainService} from './villain.service';
 
@@ -18,8 +20,13 @@ export class VillainListComponent implements OnInit {
   constructor(
     private _villainService: VillainService,
     private _routeParams: RouteParams,
-    private _router: Router
+    private _router: Router,
+    @Inject('login.config') public config: LoginConfig
   ) {}
+
+  toggle() {
+    this.config.active = !this.config.active;
+  }
 
   ngOnInit() {
     this._villainService.getVillains()
