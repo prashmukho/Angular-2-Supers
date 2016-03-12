@@ -30,10 +30,35 @@
   }
 
   .fb-logo, .google-logo {
-    height: 31px;
+    height: 31px; /* Google logo height */
   }
 }
 
 .left-user-col {
-  border-right: 1px solid lightgrey;
+  border-right: 1px solid #ccc;
+}
+
+form {
+  input.ng-dirty {
+    &:focus { border-color: #ccc }
+
+    &.has-errors { border-left: 5px solid red; }
+
+    &:not(.has-errors) { border-left: 5px solid green; }
+  }
+
+  div.errors {
+    display: none; /* until revealed */
+    margin-top: 1px; /* otherwise borders seem to overlap */
+
+    &.panel.panel-danger.show-errors {
+      display: block; /* reveals errors */
+    }
+
+    ul.error-list { 
+      margin-bottom: 0px; /* makes text look centered */
+      padding-left: 15px; /* 40px is too much for me */
+      list-style-type: none;
+    }
+  }
 }

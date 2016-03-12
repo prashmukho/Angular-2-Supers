@@ -36,8 +36,8 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
           }
           this.villain = villain;
         },
-        error => console.error(error)
-      );
+        error => console.error('Invalid ID!')
+    );
   }
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {

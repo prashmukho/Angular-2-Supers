@@ -1,5 +1,7 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, Inject, OnInit} from 'angular2/core';
+import {RouteConfig, Router, ROUTER_DIRECTIVES} from 'angular2/router';
+
+import {LoginConfig} from '../app.component';
 import {VillainListComponent} from './villain-list.component';
 import {VillainDetailComponent} from './villain-detail.component';
 import {NewVillainDetailComponent} from './new-villain-detail.component';
@@ -32,9 +34,14 @@ import {ActiveLinkService} from '../active-link.service';
   }
 ])
 export class VillainsComponent implements OnInit {
-  constructor(private _activeLink: ActiveLinkService) {}
+  constructor(
+    private _router: Router,
+    private _activeLink: ActiveLinkService,
+    @Inject('login.config') public config: LoginConfig
+  ) {}
 
   ngOnInit() {
+    if (!this.config.active) this._router.navigate(['SignIn']);
     this._activeLink.switchLink('VillainsCenter');
   }
 }

@@ -23,8 +23,7 @@ export class ValidationDirective {
     let element = this._el.nativeElement,
         value = element.value, 
         innerHtml = '';
-    // find next adjacent div with class 'errors'
-    let errors = $(element).next('div.errors');
+    let errors = $(element).next('.errors');
     $(element).removeClass('has-errors');
     errors.removeClass('panel-danger').removeClass('panel');
     

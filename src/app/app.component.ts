@@ -56,6 +56,11 @@ export class AppComponent {
   title = 'Seeds of Destruction';
 
   constructor(@Inject('login.config') public config: LoginConfig) {
-    window.localStorage.removeItem('user');
+    // for now
+    let user = JSON.parse(window.localStorage.getItem('user'));
+    if (user) {
+      this.config.active = user.active;
+      this.config.email = user.email;
+    }
   }
 }

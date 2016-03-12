@@ -19,32 +19,30 @@ module.exports = function (id, loginConfig) {
         console.log(response.status);
         
         if (response.authResponse) {
-          getUserBasic();
+          // Get basic user info
+          FB.api('/me?fields=name,email', function(response) {
+            loginConfig.active = true;
+            loginConfig.email = response.email;
+            console.log('Successful login for:', response.email);
+            $('.post-login').click();
+            loginBtn.disabled = false;
+          });
         } else {
           console.error('User aborted.');
+          loginBtn.disabled = false;
         }
 
-        loginBtn.disabled = false;
       }, {scope: 'public_profile,email'});
     });
 
     // FB.logout(function(response) {});
   };
 
-  function getUserBasic() {
-    FB.api('/me?fields=name,email', function(response) {
-      console.log('Successful login for:', response.name);
-      loginConfig.active = true;
-      loginConfig.email = response.email;
-      // console.log('called getUserBasic', JSON.stringify(response));
-      $('.post-login').click();
-    });
-  }
-
   (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); 
+    js.id = id;
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
