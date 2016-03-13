@@ -12,7 +12,7 @@ import {ActiveLinkService} from '../active-link.service';
   template: `
     <router-outlet></router-outlet>
   `,
-  directives: [VillainListComponent, ROUTER_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES],
   providers: [VillainService]
 })
 @RouteConfig([
@@ -30,7 +30,7 @@ import {ActiveLinkService} from '../active-link.service';
   {
     path: '/new', 
     name: 'NewVillainDetail', 
-     component: NewVillainDetailComponent,
+    component: NewVillainDetailComponent,
   }
 ])
 export class VillainsComponent implements OnInit {

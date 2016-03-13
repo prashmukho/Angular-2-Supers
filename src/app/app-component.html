@@ -13,16 +13,32 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav">
         <li  id='VillainsCenterLink'>
           <a [routerLink]="['VillainsCenter', 'VillainList']">
             Villains <span class="sr-only">Villains</span>
           </a>
         </li>
-        <li id='SignInLink'>
-          <a [routerLink]="['SignIn']">{{config.email || 'Sign In'}} <span class="sr-only">
-            {{'Sign In' || 'User Name'}}</span>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li id='SignInLink' *ngIf="!config.active">
+          <a [routerLink]="['SignIn']">
+            Sign In <span class="sr-only">Sign In</span>
           </a>
+        </li>
+        <li id='SignInLink' class="dropdown" *ngIf="config.active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            {{config.email}} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="#">Profile</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a [routerLink]="['SignIn']">Sign Out</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->

@@ -18,8 +18,11 @@ module.exports = function (id, loginConfig) {
     auth2.attachClickHandler(element, {},
       function(googleUser) {
         var user = googleUser.getBasicProfile();
+
         loginConfig.active = true;
         loginConfig.email = user.getEmail();
+        loginConfig.provider = 'google';
+        
         console.log('Successful login for:', user.getEmail());
         $('.post-login').click();
       }, function(error) {

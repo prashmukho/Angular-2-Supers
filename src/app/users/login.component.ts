@@ -1,18 +1,18 @@
 import {Component, Inject, OnInit} from 'angular2/core';
 import {Router} from 'angular2/router';
 
-import {LoginConfig} from '../app.component';
 import {UserService} from './user.service';
+import {ValidationDirective, Validator} from './validation.directive';
+import {LoginConfig} from '../app.component';
 import {EnvService} from '../env.service';
 import {ActiveLinkService} from '../active-link.service';
-import {ValidationDirective, Validator} from './validation.directive';
 
 import './user-form.scss';
 
 interface Login {
   username: string,
   password: string,
-  // when registering
+  // when registering, these fields may be populated
   firstName?: string,
   lastName?: string
 }
@@ -33,11 +33,8 @@ export class LoginComponent implements OnInit {
   // simple email regex
   emailRules: Validator = {
     rules: [
-      {
-        // RFC 5322 (customized) ~ almost all emails match
-        regExp: /\w+@\w+\.\w+/,
-        message: 'Invalid email address'
-      }
+      // need better matcher for emails
+      { regExp: /\w+@\w+\.\w{2,4}/, message: 'Invalid email address' }
     ]
   }
   // Stormpath password rules
@@ -62,16 +59,10 @@ export class LoginComponent implements OnInit {
     this._activeLink.switchLink('SignIn');
     // load Facebook SDK
     this._envService.getFbAppID()
-      .then(
-        id => require('./fb.js')(id, this.config),
-        error => console.log(error)
-      );
+      .then(id => require('./fb.js')(id, this.config));
     // load Google SDK
     this._envService.getGoogleClientID()
-      .then(
-        id => require('./google.js')(id, this.config),
-        error => console.log(error)
-      );
+      .then(id => require('./google.js')(id, this.config));
   }
 
   signIn(btn) {
@@ -88,13 +79,9 @@ export class LoginComponent implements OnInit {
           this._router.navigate(['VillainsCenter']);
         },
         error => {
-          // class 'panel-danger' added to div.errors if validations fail
-          if ($('.errors.panel-danger').length) {
-            // class 'show-errors' added to trigger display
-            $('.errors.panel-danger').addClass('show-errors');
-          } else {
+          if (!this._errors()) {
             let msg = JSON.parse(error._body).message;
-            console.log(this.formDataError = msg);
+            this.formDataError = msg;
           }
           btn.disabled = false;
         }
@@ -109,16 +96,13 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => { 
           console.log('Created account for', data.account.email);
-          this.action = 'Sign In' 
+          this.action = 'Sign In';
+          btn.disabled = false;
         },
         error => {
-          // class 'panel-danger' added to div.errors if validations fail
-          if ($('.errors.panel-danger').length) {
-            // class 'show-errors' added to trigger display
-            $('.errors.panel-danger').addClass('show-errors');
-          } else {
+          if (!this._errors()) {
             let msg = JSON.parse(error._body).message;
-            console.log(this.formDataError = msg);
+            this.formDataError = msg;
           }
           btn.disabled = false;
         }
@@ -130,6 +114,17 @@ export class LoginComponent implements OnInit {
       this.config.active,
       this.config.email
     );
-    this._router.navigate(['VillainsCenter']);
+    // switch route after login dialog closes
+    setTimeout(() => this._router.navigate(['VillainsCenter']), 200)
+  }
+
+  private _errors(): boolean {
+    // class 'panel-danger' added to div.errors if validations fail
+    if ($('.errors.panel-danger').length) {
+      // class 'show-errors' added to trigger display
+      $('.errors.panel-danger').addClass('show-errors');
+      return true;
+    }
+    return false
   }
 }

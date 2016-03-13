@@ -8,9 +8,6 @@ module.exports = function (id, loginConfig) {
       version    : 'v2.5'
     });
 
-    // Inconsistent behaviour when routing back and forth with 
-    // Angular if click event not bound on document as opposed
-    // to $('#facebook-login').click(...)
     $(document).on('click', '#facebook-login', function () {
       var loginBtn = $('#facebook-login')[0];
       loginBtn.disabled = true;
@@ -21,11 +18,15 @@ module.exports = function (id, loginConfig) {
         if (response.authResponse) {
           // Get basic user info
           FB.api('/me?fields=name,email', function(response) {
+
             loginConfig.active = true;
             loginConfig.email = response.email;
+            loginConfig.provider = 'facebook';
+            
             console.log('Successful login for:', response.email);
-            $('.post-login').click();
             loginBtn.disabled = false;
+
+            $('.post-login').click();
           });
         } else {
           console.error('User aborted.');
@@ -34,8 +35,6 @@ module.exports = function (id, loginConfig) {
 
       }, {scope: 'public_profile,email'});
     });
-
-    // FB.logout(function(response) {});
   };
 
   (function(d, s, id){

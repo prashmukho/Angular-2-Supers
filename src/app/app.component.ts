@@ -11,17 +11,20 @@ import {ActiveLinkService} from './active-link.service';
 export interface LoginConfig {
   active: boolean,
   email: string,
+  provider: string,
   postLogin: Function
 }
-// const will only prevent changing to another datatype i.e. not an Object
+// const will only prevent changing to another datatype
 // properties may still be added
-export const LOGIN_CONFIG: LoginConfig = {
+const LOGIN_CONFIG: LoginConfig = {
   active: false,
   email: null,
-  postLogin: (active, email) => {
+  provider: null,
+  postLogin: (active, email, provider) => {
     window.localStorage.setItem('user', JSON.stringify({
       active: active,
-      email: email
+      email: email,
+      provider: provider
     }));
   }
 };
@@ -56,7 +59,6 @@ export class AppComponent {
   title = 'Seeds of Destruction';
 
   constructor(@Inject('login.config') public config: LoginConfig) {
-    // for now
     let user = JSON.parse(window.localStorage.getItem('user'));
     if (user) {
       this.config.active = user.active;
