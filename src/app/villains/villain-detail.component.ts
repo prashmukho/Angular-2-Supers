@@ -58,7 +58,7 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
     this._villainService.updateVillain(this.villain)
       .subscribe(
         (id: string) => {
-          console.log('updated...', id);
+          console.log('updated #', id);
           this._goTo('VillainList', { id: id });
         },
         error => console.error(error)

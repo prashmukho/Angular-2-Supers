@@ -4,7 +4,6 @@ import {Router} from 'angular2/router';
 import {UserService} from './user.service';
 import {ValidationDirective, Validator} from './validation.directive';
 import {LoginConfig} from '../app.component';
-import {EnvService} from '../env.service';
 import {ActiveLinkService} from '../active-link.service';
 
 import './user-form.scss';
@@ -50,7 +49,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private _router: Router,
     private _userService: UserService,
-    private _envService: EnvService,
     private _activeLink: ActiveLinkService,
     @Inject('login.config') public config: LoginConfig
   ) {}
@@ -58,11 +56,9 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this._activeLink.switchLink('SignIn');
     // load Facebook SDK
-    this._envService.getFbAppID()
-      .then(id => require('./fb.js')(id, this.config));
+    require('./fb.js')(this.config);
     // load Google SDK
-    this._envService.getGoogleClientID()
-      .then(id => require('./google.js')(id, this.config));
+    require('./google.js')(this.config);
   }
 
   signIn(btn) {

@@ -1,15 +1,32 @@
-<div class="villain-list">
+<div id="villain-list">
   <h2>Here, there be baddies...</h2>
   <button type="button" class="btn btn-default" style="margin-bottom:10px"
     (click)="newVillain()">
     Add
   </button>
-  <div class="list-group">
-    <a *ngFor="#villain of villains" 
-      (click)="viewVillain(villain)"
-      [class.selected]="isSelected(villain['_id'])" 
-      class="list-group-item text-center">
-      {{ villain.name }}
-    </a>
-  </div>
+  <ul class="list-group">
+    <li class="list-group-item"
+      *ngFor="#villain of villains"
+      [class.selected]="isSelected(villain['_id'])">
+      <div class='row'>
+        <div class='col-xs-6'>
+          <span>
+            {{ villain.name }}
+          </span>
+        </div>
+        <div class='col-xs-6'>
+          <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default"
+              (click)="viewVillain(villain)">
+              View
+            </button>
+            <button type="button" class="btn btn-default"
+              (click)="deleteVillain(villain)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>

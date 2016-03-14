@@ -4,13 +4,10 @@ import {RouteParams, Router} from 'angular2/router';
 import {Villain} from './villain';
 import {VillainService} from './villain.service';
 
+import './villain-list.scss';
+
 @Component({
-  template: require('./templates/villain-list-component.html'),
-  styles: [`
-    .selected {
-      color: blue;
-    }
-  `]
+  template: require('./templates/villain-list-component.html')
 })
 export class VillainListComponent implements OnInit {
   villains: Villain[];
@@ -50,6 +47,18 @@ export class VillainListComponent implements OnInit {
 
   newVillain() {
     this._goTo('NewVillainDetail', {});
+  }
+
+  deleteVillain(villain: Villain): void {
+    this._villainService.deleteVillain(villain['_id'])
+      .subscribe(
+        (id: string) => {
+          let index = this.villains.indexOf(villain);
+          this.villains.splice(index, 1);
+          console.log('deleted #', id);
+        },
+        error => console.error(error)
+      );
   }
 
   private _goTo(routeName, params) {

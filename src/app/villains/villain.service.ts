@@ -40,6 +40,15 @@ export class VillainService {
       .catch(this._handleError);
   }
 
+  deleteVillain(id: string): Rx.Observable<String> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this._http.delete(`api/v1/villains/${id}`, options)
+      .map(res => res.json().data)
+      .catch(this._handleError);
+  }
+
   private _handleError(error: Response) {
     return Rx.Observable.throw(error || 'Server error');
   }

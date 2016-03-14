@@ -1,4 +1,4 @@
-module.exports = function (id, loginConfig) {
+module.exports = function (loginConfig) {
   var googleUser = {};
   var startApp = function () {
     gapi.load('auth2', function () {
@@ -7,7 +7,7 @@ module.exports = function (id, loginConfig) {
         // DEFAULTS
         // cookiepolicy: 'single_host_origin',
         // scope: 'profile, email'
-        client_id: id,
+        client_id: process.env.GOOGLE_CLIENT_ID,
       });
 
       attachSignin(document.getElementById('google-login'));

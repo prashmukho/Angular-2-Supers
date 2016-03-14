@@ -38,7 +38,7 @@
   border-right: 1px solid #ccc;
 }
 
-form {
+form.has-validation {
   input.ng-dirty {
     &:focus { border-color: #ccc }
 

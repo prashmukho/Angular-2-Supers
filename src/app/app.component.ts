@@ -5,7 +5,6 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {VillainsComponent} from './villains/villains.component';
 import {LoginComponent} from './users/login.component';
 import {DialogService} from './dialog.service';
-import {EnvService} from './env.service';
 import {ActiveLinkService} from './active-link.service';
 
 export interface LoginConfig {
@@ -37,7 +36,6 @@ const LOGIN_CONFIG: LoginConfig = {
     ROUTER_PROVIDERS, 
     HTTP_PROVIDERS, 
     DialogService,
-    EnvService,
     ActiveLinkService,
     provide('login.config', {useValue: LOGIN_CONFIG})
   ]

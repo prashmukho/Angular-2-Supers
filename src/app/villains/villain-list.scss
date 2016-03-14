@@ -1,0 +1,31 @@
+$row-height: 32.8977px; /* from inspection */
+
+#villain-list li {
+  .row .col-xs-6 span {
+    line-height: $row-height; /* vertically center text */
+  }
+}
+
+@media (min-width: 500px) { 
+  #villain-list li {
+    .row .col-xs-6 .btn-group {
+      float: right !important;
+    }
+  }
+}
+
+@media (max-width: 500px) { 
+  #villain-list li {
+    text-align: center !important;
+
+    .row .col-xs-6 {
+      width: 100%;
+      clear: both !important;
+    }
+  }
+}
+
+.selected {
+  background-color: #ccc;
+  color: white;
+}

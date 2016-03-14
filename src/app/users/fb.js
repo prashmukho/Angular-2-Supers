@@ -1,7 +1,7 @@
-module.exports = function (id, loginConfig) {
+module.exports = function (loginConfig) {
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : id,
+      appId      : process.env.FB_APP_ID,
       xfbml      : true,
       status     : true,
       cookie     : true,
