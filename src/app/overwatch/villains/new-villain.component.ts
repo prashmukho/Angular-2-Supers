@@ -3,13 +3,13 @@ import {NgForm} from 'angular2/common';
 import {Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainService} from './villain.service'
+import {VillainService} from './villains.service'
 import {DialogService} from '../../dialog.service';
 
 @Component({
   template: require('./templates/villain-detail-component.html')
 })
-export class NewVillainDetailComponent implements CanDeactivate {
+export class NewVillainComponent implements CanDeactivate {
   model = { 
     name:'', 
     power: { name: '', strength: 3 }, 
@@ -34,7 +34,7 @@ export class NewVillainDetailComponent implements CanDeactivate {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('VillainList', {});
+    this._goTo('VillainsList', {});
   }
 
   save(): void {
@@ -43,7 +43,7 @@ export class NewVillainDetailComponent implements CanDeactivate {
       .subscribe(
         (villain: Villain) => {
           console.log('saved', villain);
-          this._goTo('VillainList', { id: villain['_id'] });
+          this._goTo('VillainsList', { id: villain['_id'] });
         },
         error => console.error(error)
       );

@@ -3,7 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {HeroesListComponent} from './heroes-list.component';
 // import {NewHeroComponent} from './new-hero.component';
-// import {ViewHeroComponent} from './view-hero.component';
+// import {ViewHeroComponent} from './edit-hero.component';
 // import {HeroesService} from './heroes.service';
 import {ActiveLinkService} from '../../active-link.service';
 

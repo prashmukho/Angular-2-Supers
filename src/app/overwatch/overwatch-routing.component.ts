@@ -2,7 +2,7 @@ import {Component, OnInit, Inject} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {LoginConfig} from '../app.component.ts'
-import {VillainsComponent} from './villains/villains.component';
+import {VillainsRoutingComponent} from './villains/villains-routing.component';
 import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
 import {SupersService} from './supers.service.ts'
 
@@ -19,7 +19,7 @@ import './supers-list.scss';
   {
     path: '/villains/...',
     name: 'VillainsCenter',
-    component: VillainsComponent,
+    component: VillainsRoutingComponent,
     useAsDefault: true
   },
   {

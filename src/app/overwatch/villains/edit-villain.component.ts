@@ -3,13 +3,13 @@ import {NgForm} from 'angular2/common';
 import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainService} from './villain.service';
+import {VillainService} from './villains.service';
 import {DialogService} from '../../dialog.service';
 
 @Component({
   template: require('./templates/villain-detail-component.html')
 })
-export class VillainDetailComponent implements OnInit, CanDeactivate {
+export class EditVillainComponent implements OnInit, CanDeactivate {
   model: Villain;
   edited: boolean = false;
   action: string = 'Edit';
@@ -32,7 +32,7 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
       .subscribe(
         (villain: Villain) => {
           if (!villain) {
-            this._goTo('VillainList', {});
+            this._goTo('VillainsList', {});
             return false;
           }
           this.model = villain;
@@ -51,7 +51,7 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('VillainList', { id: this.model['_id'] });
+    this._goTo('VillainsList', { id: this.model['_id'] });
   }
       
   save() {
@@ -60,7 +60,7 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
       .subscribe(
         (villain: Villain) => {
           console.log('updated', villain);
-          this._goTo('VillainList', { id: villain['_id'] });
+          this._goTo('VillainsList', { id: villain['_id'] });
         },
         error => console.error(error)
       );

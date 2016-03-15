@@ -1,10 +1,10 @@
 import {Component, OnInit} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
-import {VillainListComponent} from './villain-list.component';
-import {VillainDetailComponent} from './villain-detail.component';
-import {NewVillainDetailComponent} from './new-villain-detail.component';
-import {VillainService} from './villain.service';
+import {VillainsListComponent} from './villains-list.component';
+import {EditVillainComponent} from './edit-villain.component';
+import {NewVillainComponent} from './new-villain.component';
+import {VillainService} from './villains.service';
 import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
@@ -17,22 +17,22 @@ import {ActiveLinkService} from '../../active-link.service';
 @RouteConfig([
   {
     path: '/', 
-    name: 'VillainList', 
-    component: VillainListComponent,
+    name: 'VillainsList', 
+    component: VillainsListComponent,
     useAsDefault: true
   },
   {
     path: '/:id', 
-    name: 'VillainDetail', 
-    component: VillainDetailComponent,
+    name: 'EditVillain', 
+    component: EditVillainComponent,
   },
   {
     path: '/new', 
-    name: 'NewVillainDetail', 
-    component: NewVillainDetailComponent,
+    name: 'NewVillain', 
+    component: NewVillainComponent,
   }
 ])
-export class VillainsComponent implements OnInit {
+export class VillainsRoutingComponent implements OnInit {
   constructor(private _activeLink: ActiveLinkService) {}
 
   ngOnInit() {

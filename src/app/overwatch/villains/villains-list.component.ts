@@ -2,12 +2,12 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainService} from './villain.service';
+import {VillainService} from './villains.service';
 
 @Component({
   template: require('./templates/villain-list-component.html')
 })
-export class VillainListComponent implements OnInit {
+export class VillainsListComponent implements OnInit {
   list: Villain[];
   selectedId: string;
 
@@ -35,14 +35,14 @@ export class VillainListComponent implements OnInit {
   }
   
   editVillain(villain: Villain): void {
-    this._goTo('VillainDetail', {
+    this._goTo('EditVillain', {
       id: villain['_id'],
       // villain: JSON.stringify(villain)
     });
   }
 
   newVillain() {
-    this._goTo('NewVillainDetail', {});
+    this._goTo('NewVillain', {});
   }
 
   deleteVillain(villain: Villain): void {
