@@ -32,7 +32,9 @@ import {ActiveLinkService} from '../../active-link.service';
   // }
 ])
 export class HeroesRoutingComponent {
-  // constructor(
-  //   private _router: Router,
-  // ) {}
+  constructor(private _activeLink: ActiveLinkService) {}
+
+  ngOnInit() {
+    this._activeLink.switchLink('HeroesCenter');
+  }
 }

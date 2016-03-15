@@ -32,14 +32,10 @@ import {ActiveLinkService} from '../../active-link.service';
     component: NewVillainDetailComponent,
   }
 ])
-export class SupersComponent implements OnInit {
+export class VillainsComponent implements OnInit {
   constructor(private _activeLink: ActiveLinkService) {}
 
   ngOnInit() {
-    if (/^\/villains/.test(window.location.pathname)) {
-      this._activeLink.switchLink('VillainsCenter');
-    } else if (/^\/heroes/.test(window.location.pathname)) {
-      this._activeLink.switchLink('HeroesCenter');
-    }
+    this._activeLink.switchLink('VillainsCenter');
   }
 }

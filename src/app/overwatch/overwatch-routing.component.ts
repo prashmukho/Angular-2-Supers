@@ -1,8 +1,10 @@
 import {Component, OnInit, Inject} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
-import {LoginConfig} from '../app.component';
-import {SupersComponent} from './villains/supers.component';
+import {LoginConfig} from '../app.component.ts'
+import {VillainsComponent} from './villains/villains.component';
+import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
+import {SupersService} from './supers.service.ts'
 
 import './supers-list.scss';
 
@@ -10,19 +12,20 @@ import './supers-list.scss';
   template: `
     <router-outlet></router-outlet>
   `,
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES],
+  providers: [SupersService]
 })
 @RouteConfig([
   {
     path: '/villains/...',
     name: 'VillainsCenter',
-    component: SupersComponent,
+    component: VillainsComponent,
     useAsDefault: true
   },
   {
     path: '/heroes/...',
     name: 'HeroesCenter',
-    component: SupersComponent,
+    component: HeroesRoutingComponent,
   }
   ])
 export class OverwatchRoutingComponent implements OnInit {

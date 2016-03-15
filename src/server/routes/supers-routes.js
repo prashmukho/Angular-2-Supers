@@ -3,12 +3,14 @@ var Super = require('../db/init').Super;
 
 var express = require('express');
 var router = express.Router();
+var pluralize = require('pluralize')
 
 // #index
-router.get('/villains', function(req, res) {
+router.get('/:collection', function(req, res) {
+  var collection = req.params.collection;
   Super
     .find({ 
-      category: 'villain' 
+      category: pluralize(collection, 1)
     }, '-category -crises', 
     function (err, villains) {
       if (err) console.log(err);
@@ -17,59 +19,60 @@ router.get('/villains', function(req, res) {
 });
 
 // #create
-router.post('/villains', function(req, res) {
-  var input = req.body.villain;
-  input['category'] = 'villain';
-  var villain = new Super(input);
-  villain.save(function (err) {
+router.post('/:collection', function(req, res) {
+  var collection = req.params.collection;
+  var input = req.body.model;
+  input['category'] = pluralize(collection, 1);
+  var model = new Super(input);
+  model.save(function (err) {
     if (err) console.log(err);
     res.send({ 
       // not sending fields - category, crises
       data: {
-        _id: villain._id,
-        name: villain.name,
-        power: villain.power,
-        alias: villain.alias
+        _id: model._id,
+        name: model.name,
+        power: model.power,
+        alias: model.alias
       }
     });
   });
 });
 
 // #read
-router.get('/villains/:id', function(req, res) {
+router.get('/:collection/:id', function(req, res) {
   var id = mongoose.Types.ObjectId(req.params.id);
   Super
-    .findById(id, '-category -crises', function (err, villain) {
+    .findById(id, '-category -crises', function (err, model) {
       if (err) console.log(err);
-      res.send({ data: villain });
+      res.send({ data: model });
     });
 });
 
 // #update
-router.put('/villains/:id', function(req, res) {
+router.put('/:collection/:id', function(req, res) {
   var id = mongoose.Types.ObjectId(req.params.id);
   Super
     .findByIdAndUpdate(id, { 
-      $set: req.body.villain 
+      $set: req.body.model 
     }, {
       new: true, // return updated object
       runValidators: true, 
       select: '-category -crises'
-    }, function (err, villain) {
+    }, function (err, model) {
       if (err) console.log(err);
-      res.send({ data: villain });
+      res.send({ data: model });
     });
 });
 
 // #delete
-router.delete('/villains/:id', function(req, res) {
+router.delete('/:collection/:id', function(req, res) {
   var id = mongoose.Types.ObjectId(req.params.id);
   Super
     .findByIdAndRemove(id, {
       select: '-category -crises'
-    }, function (err, villain) {
+    }, function (err, model) {
       if (err) console.log(err);
-      res.send({ data: villain });
+      res.send({ data: model });
     });
 });
 
