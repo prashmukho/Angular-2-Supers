@@ -1,12 +1,11 @@
-import {Component, Inject, OnInit} from 'angular2/core';
-import {RouteConfig, Router, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, OnInit} from 'angular2/core';
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
-import {LoginConfig} from '../app.component';
 import {VillainListComponent} from './villain-list.component';
 import {VillainDetailComponent} from './villain-detail.component';
 import {NewVillainDetailComponent} from './new-villain-detail.component';
 import {VillainService} from './villain.service';
-import {ActiveLinkService} from '../active-link.service';
+import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
   template: `
@@ -34,14 +33,12 @@ import {ActiveLinkService} from '../active-link.service';
   }
 ])
 export class VillainsComponent implements OnInit {
-  constructor(
-    private _router: Router,
-    private _activeLink: ActiveLinkService,
-    @Inject('login.config') public config: LoginConfig
-  ) {}
+  constructor(private _activeLink: ActiveLinkService) {}
 
   ngOnInit() {
-    if (!this.config.active) this._router.navigate(['SignIn']);
+    console.log('villains path', /villains/.test(window.location.pathname));
+    console.log('heroes path', /heroes/.test(window.location.pathname));
+
     this._activeLink.switchLink('VillainsCenter');
   }
 }

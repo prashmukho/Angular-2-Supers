@@ -1,13 +1,13 @@
 $row-height: 32.8977px; /* from inspection */
 
-#villain-list li {
+.supers-list li {
   .row .col-xs-6 span {
     line-height: $row-height; /* vertically center text */
   }
 }
 
 @media (min-width: 500px) { 
-  #villain-list li {
+  .supers-list li {
     .row .col-xs-6 .btn-group {
       float: right !important;
     }
@@ -15,7 +15,7 @@ $row-height: 32.8977px; /* from inspection */
 }
 
 @media (max-width: 500px) { 
-  #villain-list li {
+  .supers-list li {
     text-align: center !important;
 
     .row .col-xs-6 {
@@ -25,7 +25,7 @@ $row-height: 32.8977px; /* from inspection */
   }
 }
 
-.selected {
+.supers-list li.selected {
   background-color: #ccc;
   color: white;
 }

@@ -1,8 +1,22 @@
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/villains');
+var Schema = mongoose.Schema;
 
-module.exports.Villain = mongoose.model('Villain', {
-  name: { type: String, required: true },
-  power: { type: String, required: true },
-  alias: String
+var superSchema = new Schema({
+  category: { type: String, required: true, index: true },
+  name: { type: String, required: true, trim: true },
+  power: { type: Schema.Types.Mixed, required: true },
+  alias: String,
+  crises : [{ type: Schema.Types.ObjectId, ref: 'Crisis' }]
 });
+module.exports.Super = mongoose.model('Super', superSchema);
+
+var crisisSchema = new Schema({
+  title : { type: String, required: true, trim: true },
+  begin: { type: Date, default: Date.now },
+  end: Date,
+  villains : [{ type: Schema.Types.ObjectId, ref: 'Super' }],
+  heroes: [{ type: Schema.Types.ObjectId, ref: 'Super' }]
+});
+module.exports.Crisis = mongoose.model('Crisis', crisisSchema);
+
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/villains');

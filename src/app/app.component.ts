@@ -2,7 +2,7 @@ import {Component, provide, Inject} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 
-import {VillainsComponent} from './villains/villains.component';
+import {OverwatchRoutingComponent} from './overwatch/overwatch-routing.component';
 import {LoginComponent} from './users/login.component';
 import {DialogService} from './dialog.service';
 import {ActiveLinkService} from './active-link.service';
@@ -42,9 +42,9 @@ const LOGIN_CONFIG: LoginConfig = {
 })
 @RouteConfig([
   { 
-    path: '/villains/...', 
-    name: 'VillainsCenter', 
-    component: VillainsComponent,
+    path: '/...', 
+    name: 'Overwatch', 
+    component: OverwatchRoutingComponent,
     useAsDefault: true
   },
   { 

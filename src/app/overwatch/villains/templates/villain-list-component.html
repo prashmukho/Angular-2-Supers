@@ -1,4 +1,4 @@
-<div id="villain-list">
+<div class="supers-list">
   <h2>Here, there be baddies...</h2>
   <button type="button" class="btn btn-default" style="margin-bottom:10px"
     (click)="newVillain()">
@@ -6,22 +6,22 @@
   </button>
   <ul class="list-group">
     <li class="list-group-item"
-      *ngFor="#villain of villains"
-      [class.selected]="isSelected(villain['_id'])">
+      *ngFor="#model of list"
+      [class.selected]="isSelected(model['_id'])">
       <div class='row'>
         <div class='col-xs-6'>
           <span>
-            {{ villain.name }}
+            {{ model.name }}
           </span>
         </div>
         <div class='col-xs-6'>
           <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-default"
-              (click)="viewVillain(villain)">
-              View
+              (click)="editVillain(model)">
+              Edit
             </button>
             <button type="button" class="btn btn-default"
-              (click)="deleteVillain(villain)">
+              (click)="deleteVillain(model)">
               Delete
             </button>
           </div>

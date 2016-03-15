@@ -1,15 +1,16 @@
 import {Component, OnInit} from 'angular2/core';
 import {NgForm} from 'angular2/common';
 import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
+
 import {Villain} from './villain';
 import {VillainService} from './villain.service';
-import {DialogService} from '../dialog.service';
+import {DialogService} from '../../dialog.service';
 
 @Component({
   template: require('./templates/villain-detail-component.html')
 })
 export class VillainDetailComponent implements OnInit, CanDeactivate {
-  villain: Villain;
+  model: Villain;
   edited: boolean = false;
   action: string = 'Edit';
 
@@ -23,25 +24,25 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
   ngOnInit() {
     // let villain = this._routeParams.get('villain');
     // if (villain) {
-    //   return this.villain = JSON.parse(decodeURIComponent(villain));
+    //   return this.model = JSON.parse(decodeURIComponent(villain));
     // }
 
     let id = this._routeParams.get('id');
     this._villainService.getVillain(id)
       .subscribe(
-        villain => {
+        (villain: Villain) => {
           if (!villain) {
             this._goTo('VillainList', {});
             return false;
           }
-          this.villain = villain;
+          this.model = villain;
         },
         error => console.error('Invalid ID!')
     );
   }
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
-    if (!this.villain || !this.edited) {
+    if (!this.model || !this.edited) {
       return true;
     }
 
@@ -50,16 +51,16 @@ export class VillainDetailComponent implements OnInit, CanDeactivate {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('VillainList', { id: this.villain['_id'] });
+    this._goTo('VillainList', { id: this.model['_id'] });
   }
       
   save() {
     this.edited = false;
-    this._villainService.updateVillain(this.villain)
+    this._villainService.updateVillain(this.model)
       .subscribe(
-        (id: string) => {
-          console.log('updated #', id);
-          this._goTo('VillainList', { id: id });
+        (villain: Villain) => {
+          console.log('updated', villain);
+          this._goTo('VillainList', { id: villain['_id'] });
         },
         error => console.error(error)
       );

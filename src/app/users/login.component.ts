@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
             this.config.active = true, 
             this.config.email = data.account.email
           );
-          this._router.navigate(['VillainsCenter']);
+          this._router.navigate(['Overwatch']);
         },
         error => {
           if (!this._errors()) {
@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit {
       this.config.email
     );
     // switch route after login dialog closes
-    setTimeout(() => this._router.navigate(['VillainsCenter']), 200)
+    setTimeout(() => this._router.navigate(['Overwatch']), 200)
   }
 
   private _errors(): boolean {

@@ -30,7 +30,7 @@ export class VillainService {
       .catch(this._handleError);
   }
 
-  updateVillain(villain: Villain): Rx.Observable<String> {
+  updateVillain(villain: Villain): Rx.Observable<Villain> {
     let body = JSON.stringify({ villain });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -40,7 +40,7 @@ export class VillainService {
       .catch(this._handleError);
   }
 
-  deleteVillain(id: string): Rx.Observable<String> {
+  deleteVillain(id: string): Rx.Observable<Villain> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 

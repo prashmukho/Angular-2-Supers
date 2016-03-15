@@ -1,16 +1,14 @@
-import {Component, OnInit, Inject} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 
 import {Villain} from './villain';
 import {VillainService} from './villain.service';
 
-import './villain-list.scss';
-
 @Component({
   template: require('./templates/villain-list-component.html')
 })
 export class VillainListComponent implements OnInit {
-  villains: Villain[];
+  list: Villain[];
   selectedId: string;
 
   constructor(
@@ -20,12 +18,10 @@ export class VillainListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // console.log('villain.component ngOnInit', window.localStorage.getItem('user'));
-
     this._villainService.getVillains()
       .subscribe(
-        villains => {
-          this.villains = villains;
+        list => {
+          this.list = list;
 
           let id = this._routeParams.get('id');
           if (id) this.selectedId = id;
@@ -38,7 +34,7 @@ export class VillainListComponent implements OnInit {
     return this.selectedId === id;
   }
   
-  viewVillain(villain: Villain): void {
+  editVillain(villain: Villain): void {
     this._goTo('VillainDetail', {
       id: villain['_id'],
       // villain: JSON.stringify(villain)
@@ -52,10 +48,10 @@ export class VillainListComponent implements OnInit {
   deleteVillain(villain: Villain): void {
     this._villainService.deleteVillain(villain['_id'])
       .subscribe(
-        (id: string) => {
-          let index = this.villains.indexOf(villain);
-          this.villains.splice(index, 1);
-          console.log('deleted #', id);
+        (villain: Villain) => {
+          let index = this.list.indexOf(villain);
+          this.list.splice(index, 1);
+          console.log('deleted', villain);
         },
         error => console.error(error)
       );

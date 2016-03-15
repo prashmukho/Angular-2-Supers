@@ -1,27 +1,31 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {NgForm} from 'angular2/common';
-import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
+import {Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
+
 import {Villain} from './villain';
 import {VillainService} from './villain.service'
-import {DialogService} from '../dialog.service';
+import {DialogService} from '../../dialog.service';
 
 @Component({
   template: require('./templates/villain-detail-component.html')
 })
 export class NewVillainDetailComponent implements CanDeactivate {
-  villain: any;
+  model = { 
+    name:'', 
+    power: { name: '', strength: 3 }, 
+    alias:'' 
+  };
   edited: boolean = false;
   action: string = 'New';
 
   constructor(
-    private _routeParams: RouteParams,
     private _router: Router,
     private _villainService: VillainService,
     private _dialogService: DialogService
-  ) { this.villain = { name:'', power:'', alias:'' }; }
+  ) {}
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
-    if (!this.villain || !this.edited) {
+    if (!this.edited) {
       return true;
     }
 
@@ -35,11 +39,11 @@ export class NewVillainDetailComponent implements CanDeactivate {
 
   save(): void {
     this.edited = false;
-    this._villainService.addVillain(this.villain)
+    this._villainService.addVillain(this.model)
       .subscribe(
         (villain: Villain) => {
-          console.log('saved...', villain);
-          this._goTo('VillainList', { id: this.villain['_id'] });
+          console.log('saved', villain);
+          this._goTo('VillainList', { id: villain['_id'] });
         },
         error => console.error(error)
       );
