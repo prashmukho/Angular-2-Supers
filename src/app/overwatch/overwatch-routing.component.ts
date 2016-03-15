@@ -2,8 +2,7 @@ import {Component, OnInit, Inject} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {LoginConfig} from '../app.component';
-import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
-import {VillainsComponent} from './villains/villains.component';
+import {SupersComponent} from './villains/supers.component';
 
 import './supers-list.scss';
 
@@ -17,13 +16,13 @@ import './supers-list.scss';
   {
     path: '/villains/...',
     name: 'VillainsCenter',
-    component: VillainsComponent,
+    component: SupersComponent,
     useAsDefault: true
   },
   {
     path: '/heroes/...',
     name: 'HeroesCenter',
-    component: VillainsComponent,
+    component: SupersComponent,
   }
   ])
 export class OverwatchRoutingComponent implements OnInit {
@@ -33,7 +32,6 @@ export class OverwatchRoutingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (!this.config.active) 
-      this._router.parent.navigate(['SignIn']);
+    if (!this.config.active) this._router.parent.navigate(['SignIn']);
   }
 }

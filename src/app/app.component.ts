@@ -56,11 +56,18 @@ const LOGIN_CONFIG: LoginConfig = {
 export class AppComponent { 
   title = 'Seeds of Destruction';
 
-  constructor(@Inject('login.config') public config: LoginConfig) {
+  constructor(
+    private _activeLinkService: ActiveLinkService,
+    @Inject('login.config') public config: LoginConfig
+  ) {
     let user = JSON.parse(window.localStorage.getItem('user'));
     if (user) {
       this.config.active = user.active;
       this.config.email = user.email;
     }
+  }
+
+  switchLink(linkRef) {
+    this._activeLinkService.switchLink(linkRef);
   }
 }

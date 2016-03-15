@@ -15,8 +15,15 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li  id='VillainsCenterLink'>
-          <a [routerLink]="['Overwatch','VillainsCenter', 'VillainList']">
+          <!-- list is the default child route -->
+          <a [routerLink]="['Overwatch','VillainsCenter']" (click)="switchLink('VillainsCenter')">
             Villains <span class="sr-only">Villains</span>
+          </a>
+        </li>
+        <li  id='HeroesCenterLink'>
+          <!-- list is the default child route -->
+          <a [routerLink]="['Overwatch','HeroesCenter']" (click)="switchLink('HeroesCenter')">
+            Heroes <span class="sr-only">Heroes</span>
           </a>
         </li>
       </ul>
