@@ -36,9 +36,9 @@ export class SupersComponent implements OnInit {
   constructor(private _activeLink: ActiveLinkService) {}
 
   ngOnInit() {
-    if (/villains/.test(window.location.pathname)) {
+    if (/^\/villains/.test(window.location.pathname)) {
       this._activeLink.switchLink('VillainsCenter');
-    } else if (/heroes/.test(window.location.pathname)) {
+    } else if (/^\/heroes/.test(window.location.pathname)) {
       this._activeLink.switchLink('HeroesCenter');
     }
   }

@@ -9,6 +9,7 @@ import {VillainService} from './villain.service';
 })
 export class VillainListComponent implements OnInit {
   list: Villain[];
+  category: string = window.location.pathname.match(/^\/(.*)\/?/)[1];
   selectedId: string;
 
   constructor(
@@ -28,6 +29,8 @@ export class VillainListComponent implements OnInit {
         },
         error => console.error(error)
       );
+
+    console.log(this.category);
   }
 
   isSelected(id: string): boolean { 
