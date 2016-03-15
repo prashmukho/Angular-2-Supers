@@ -7,7 +7,7 @@ import {VillainService} from './villains.service';
 import {DialogService} from '../../dialog.service';
 
 @Component({
-  template: require('./templates/villain-detail-component.html')
+  template: require('../templates/detail.html')
 })
 export class EditVillainComponent implements OnInit, CanDeactivate {
   model: Villain;

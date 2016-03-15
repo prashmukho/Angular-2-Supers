@@ -5,7 +5,7 @@ import {Villain} from './villain';
 import {VillainService} from './villains.service';
 
 @Component({
-  template: require('./templates/villain-list-component.html')
+  template: require('../templates/list.html')
 })
 export class VillainsListComponent implements OnInit {
   list: Villain[];
