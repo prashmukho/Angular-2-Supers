@@ -8,8 +8,10 @@ import {HeroesService} from './heroes.service';
   template: require( '../templates/supers-list.html')
 })
 export class HeroesListComponent implements OnInit {
+  title = 'Here, there be saviours...';
   list: Hero[];
   selectedId: string;
+  category = 'hero';
 
   constructor(
     private _heroesService: HeroesService,

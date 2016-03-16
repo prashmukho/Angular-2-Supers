@@ -4,8 +4,8 @@ interface Power {
 }
 
 export interface Super {
-  _id: string,
-  name: string,
-  power: Power,
-  alias?: string
+  _id: string;
+  name: string;
+  power: Power;
+  alias?: string;
 }

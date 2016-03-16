@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
-var Crisis = require('../db/init').Crisis;
+var schemaModule = require('../db/init');
+var Crisis = schemaModule.Crisis;
+var Super = schemaModule.Super;
 
 var express = require('express');
 var router = express.Router();
@@ -16,8 +18,8 @@ router.get('/crises', function(req, res) {
 
 // Creating a Crisis doc via a villain and adding it to 
 // the villain's crises array as a ref
-router.post('/villains/:id/crises', function(req, res) {
-  var villainId = mongoose.Types.ObjectId(req.params.id);
+router.post('/villains/:villainId/crises', function(req, res) {
+  var villainId = mongoose.Types.ObjectId(req.params.villainId);
   Super
     .findById(villainId, function (err, villain) {
       if (err) console.log(err);

@@ -1,6 +1,6 @@
 <div class="model-detail" *ngIf="model">
   <h2>{{action}}</h2>
-  <form #detailForm="ngForm">
+  <form role="form" #detailForm="ngForm">
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" class="form-control" required
@@ -31,7 +31,6 @@
           [(ngModel)]="model.power.strength" />
       </div>
     </div>
-    <br>
     <button type="button" class="btn btn-primary" 
       [disabled]="!detailForm.form.valid"
       (click)="save()">

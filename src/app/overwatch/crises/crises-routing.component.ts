@@ -3,13 +3,15 @@ import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {CrisesListComponent} from './crises-list.component';
 import {NewCrisisComponent} from './new-crisis.component';
+import {CrisesService} from './crises.service';
 import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
   template: `
     <router-outlet></router-outlet>
   `,
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES],
+  providers: [CrisesService]
 })
 @RouteConfig([
   {
@@ -19,7 +21,7 @@ import {ActiveLinkService} from '../../active-link.service';
     useAsDefault: true
   },
   {
-    path: '/villains/:id/crises/new',
+    path: '/villains/:villainId/crises/new',
     name: 'NewCrisis',
     component: NewCrisisComponent
   }

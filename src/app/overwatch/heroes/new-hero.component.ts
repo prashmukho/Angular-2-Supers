@@ -3,7 +3,7 @@ import {NgForm} from 'angular2/common';
 import {Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 import {Hero} from './hero';
-import {HeroesService} from './heroes.service'
+import {HeroesService} from './heroes.service';
 import {DialogService} from '../../dialog.service';
 
 @Component({
@@ -38,11 +38,11 @@ export class NewHeroComponent implements CanDeactivate {
   }
 
   save(): void {
-    this.edited = false;
     this._heroesService.addHero(this.model)
       .subscribe(
         (hero: Hero) => {
           console.log('saved', hero);
+          this.edited = false;
           this._goTo('HeroesList', { id: hero['_id'] });
         },
         error => console.error(error)

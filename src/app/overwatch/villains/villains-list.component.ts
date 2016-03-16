@@ -8,9 +8,10 @@ import {VillainsService} from './villains.service';
   template: require('../templates/supers-list.html')
 })
 export class VillainsListComponent implements OnInit {
+  title = 'Here, there be baddies...';
   list: Villain[];
   selectedId: string;
-  category: string = 'villain';
+  category = 'villain';
 
   constructor(
     private _villainsService: VillainsService,
@@ -59,7 +60,11 @@ export class VillainsListComponent implements OnInit {
   }
 
   instigate(villainId) {
-    this._router.parent.navigate(['CrisesCenter', 'NewCrisis', { id: villainId }]);
+    this._router.parent.navigate([
+      'CrisesCenter', 
+      'NewCrisis', 
+      { villainId: villainId }
+    ]);
   }
 
   private _goTo(routeName, params) {

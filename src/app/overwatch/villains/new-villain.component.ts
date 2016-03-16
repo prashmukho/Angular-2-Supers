@@ -3,7 +3,7 @@ import {NgForm} from 'angular2/common';
 import {Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainsService} from './villains.service'
+import {VillainsService} from './villains.service';
 import {DialogService} from '../../dialog.service';
 
 @Component({
@@ -38,11 +38,11 @@ export class NewVillainComponent implements CanDeactivate {
   }
 
   save(): void {
-    this.edited = false;
     this._villainsService.addVillain(this.model)
       .subscribe(
         (villain: Villain) => {
           console.log('saved', villain);
+          this.edited = false;
           this._goTo('VillainsList', { id: villain['_id'] });
         },
         error => console.error(error)
