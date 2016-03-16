@@ -1,0 +1,42 @@
+<div class="supers-list">
+  <h2>Here, there be baddies...</h2>
+  <button type="button" class="btn btn-primary" style="margin-bottom:10px"
+    (click)="add()">
+    Add
+  </button>
+  <ul class="list-group">
+    <li class="list-group-item"
+      *ngFor="#model of list"
+      [class.selected]="isSelected(model['_id'])">
+      <div class='row'>
+        <div class='col-xs-6'>
+          <span class="name">
+            {{ model.name }}
+          </span>
+        </div>
+        <div class='col-xs-6'>
+          <div class="btn-group crisis" role="group" aria-label="..."
+            *ngIf="category === 'villain'">
+            <button type="button" class='btn btn-warning'
+              (click)="instigate(model['_id'])">
+              Instigate
+            </button>
+            <!-- <button type="button" class='btn btn-warning'>
+              Conspire
+            </button> -->
+          </div>
+          <div class="btn-group actions" role="group" aria-label="...">
+            <button type="button" class="btn btn-default"
+              (click)="edit(model)">
+              Edit
+            </button>
+            <button type="button" class="btn btn-danger"
+              (click)="delete(model['_id'])">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

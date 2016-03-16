@@ -3,7 +3,11 @@ var Super = require('../db/init').Super;
 
 var express = require('express');
 var router = express.Router();
-var pluralize = require('pluralize')
+var pluralize = require('pluralize');
+
+// :collection refers to a category-based collection for making 
+// REST-like requests to a single real collection of supers
+// eg. /heroes/... for handling { category: heroes } and so on
 
 // #index
 router.get('/:collection', function(req, res) {
@@ -20,20 +24,13 @@ router.get('/:collection', function(req, res) {
 
 // #create
 router.post('/:collection', function(req, res) {
-  var collection = req.params.collection;
-  var input = req.body.model;
-  input['category'] = pluralize(collection, 1);
-  var model = new Super(input);
+  var model = new Super(req.body.model);
+  model.category = pluralize(req.params.collection, 1);
   model.save(function (err) {
     if (err) console.log(err);
     res.send({ 
       // not sending fields - category, crises
-      data: {
-        _id: model._id,
-        name: model.name,
-        power: model.power,
-        alias: model.alias
-      }
+      data: model.publicSuper()
     });
   });
 });

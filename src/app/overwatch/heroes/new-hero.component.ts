@@ -7,7 +7,7 @@ import {HeroesService} from './heroes.service'
 import {DialogService} from '../../dialog.service';
 
 @Component({
-  template: require('../templates/detail.html')
+  template: require('../templates/super-detail.html')
 })
 export class NewHeroComponent implements CanDeactivate {
   model = { 

@@ -5,7 +5,7 @@ import {Hero} from './hero';
 import {HeroesService} from './heroes.service';
 
 @Component({
-  template: require( '../templates/list.html')
+  template: require( '../templates/supers-list.html')
 })
 export class HeroesListComponent implements OnInit {
   list: Hero[];
@@ -42,8 +42,8 @@ export class HeroesListComponent implements OnInit {
     this._goTo('NewHero', {});
   }
 
-  delete(hero: Hero): void {
-    this._heroesService.deleteHero(hero['_id'])
+  delete(heroId: string): void {
+    this._heroesService.deleteHero(heroId)
       .subscribe(
         (hero: Hero) => {
           let index = this.list.indexOf(hero);

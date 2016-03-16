@@ -29,7 +29,7 @@ import './supers-list.scss';
     component: HeroesRoutingComponent,
   },
   {
-    path: '/crises/...',
+    path: '/...',
     name: 'CrisesCenter',
     component: CrisesRoutingComponent,
   }

@@ -1,7 +1,8 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
-import {CrisesListComponent} from './crises-list.component'
+import {CrisesListComponent} from './crises-list.component';
+import {NewCrisisComponent} from './new-crisis.component';
 import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
@@ -12,10 +13,15 @@ import {ActiveLinkService} from '../../active-link.service';
 })
 @RouteConfig([
   {
-    path: '/',
+    path: '/crises',
     name: 'CrisesList',
     component: CrisesListComponent,
     useAsDefault: true
+  },
+  {
+    path: '/villains/:id/crises/new',
+    name: 'NewCrisis',
+    component: NewCrisisComponent
   }
 ])
 export class CrisesRoutingComponent {

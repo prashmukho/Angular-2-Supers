@@ -5,11 +5,12 @@ import {Villain} from './villain';
 import {VillainsService} from './villains.service';
 
 @Component({
-  template: require('../templates/list.html')
+  template: require('../templates/supers-list.html')
 })
 export class VillainsListComponent implements OnInit {
   list: Villain[];
   selectedId: string;
+  category: string = 'villain';
 
   constructor(
     private _villainsService: VillainsService,
@@ -45,8 +46,8 @@ export class VillainsListComponent implements OnInit {
     this._goTo('NewVillain', {});
   }
 
-  delete(villain: Villain): void {
-    this._villainsService.deleteVillain(villain['_id'])
+  delete(villainId: string): void {
+    this._villainsService.deleteVillain(villainId)
       .subscribe(
         (villain: Villain) => {
           let index = this.list.indexOf(villain);
@@ -55,6 +56,10 @@ export class VillainsListComponent implements OnInit {
         },
         error => console.error(error)
       );
+  }
+
+  instigate(villainId) {
+    this._router.parent.navigate(['CrisesCenter', 'NewCrisis', { id: villainId }]);
   }
 
   private _goTo(routeName, params) {

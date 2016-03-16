@@ -8,7 +8,15 @@ var superSchema = new Schema({
   alias: String,
   crises : [{ type: Schema.Types.ObjectId, ref: 'Crisis' }]
 });
-module.exports.Super = mongoose.model('Super', superSchema);
+
+superSchema.methods.publicSuper = function () {
+  return {
+    _id: this._id,
+    name: this.name,
+    power: this.power,
+    alias: this.alias
+  };
+};
 
 var crisisSchema = new Schema({
   title : { type: String, required: true, trim: true },
@@ -17,6 +25,11 @@ var crisisSchema = new Schema({
   villains : [{ type: Schema.Types.ObjectId, ref: 'Super' }],
   heroes: [{ type: Schema.Types.ObjectId, ref: 'Super' }]
 });
-module.exports.Crisis = mongoose.model('Crisis', crisisSchema);
+
+
+module.exports = {
+  Super: mongoose.model('Super', superSchema),
+  Crisis: mongoose.model('Crisis', crisisSchema)
+}
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/villains');
