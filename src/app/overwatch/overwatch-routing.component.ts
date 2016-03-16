@@ -4,6 +4,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 import {LoginConfig} from '../app.component.ts'
 import {VillainsRoutingComponent} from './villains/villains-routing.component';
 import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
+import {CrisesRoutingComponent} from './crises/crises-routing.component';
 import {SupersService} from './supers.service.ts'
 
 import './supers-list.scss';
@@ -26,8 +27,13 @@ import './supers-list.scss';
     path: '/heroes/...',
     name: 'HeroesCenter',
     component: HeroesRoutingComponent,
+  },
+  {
+    path: '/crises/...',
+    name: 'CrisesCenter',
+    component: CrisesRoutingComponent,
   }
-  ])
+])
 export class OverwatchRoutingComponent implements OnInit {
   constructor(
     private _router: Router,

@@ -3,7 +3,7 @@ import {Response} from 'angular2/http';
 import * as Rx from "rxjs/Rx"
 
 import {Villain} from './villain';
-import {SupersService} from '../supers.service.ts'
+import {SupersService} from '../supers.service'
 
 @Injectable()
 export class VillainsService {
