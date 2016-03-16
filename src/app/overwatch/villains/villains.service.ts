@@ -6,7 +6,7 @@ import {Villain} from './villain';
 import {SupersService} from '../supers.service.ts'
 
 @Injectable()
-export class VillainService {
+export class VillainsService {
   constructor (private _supersService: SupersService<Villain>) {}
 
   getVillain(id: string): Rx.Observable<Villain> {

@@ -1,6 +1,6 @@
 <div class="model-detail" *ngIf="model">
-  <h2>{{action}} Villain</h2>
-  <form #villainForm="ngForm">
+  <h2>{{action}}</h2>
+  <form #detailForm="ngForm">
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" class="form-control" required
@@ -33,12 +33,12 @@
     </div>
     <br>
     <button type="button" class="btn btn-default" 
-      [disabled]="!villainForm.form.valid"
+      [disabled]="!detailForm.form.valid"
       (click)="save()">
       Save
     </button>
     <button type="button" class="btn btn-default" 
-      (click)="cancel(villainForm.form.dirty)">
+      (click)="cancel(detailForm.form.dirty)">
       Cancel
     </button>
   </form>

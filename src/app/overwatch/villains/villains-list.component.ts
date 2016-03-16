@@ -2,7 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainService} from './villains.service';
+import {VillainsService} from './villains.service';
 
 @Component({
   template: require('../templates/list.html')
@@ -12,13 +12,13 @@ export class VillainsListComponent implements OnInit {
   selectedId: string;
 
   constructor(
-    private _villainService: VillainService,
+    private _villainsService: VillainsService,
     private _routeParams: RouteParams,
     private _router: Router
   ) {}
 
   ngOnInit() {
-    this._villainService.getVillains()
+    this._villainsService.getVillains()
       .subscribe(
         list => {
           this.list = list;
@@ -34,19 +34,19 @@ export class VillainsListComponent implements OnInit {
     return this.selectedId === id;
   }
   
-  editVillain(villain: Villain): void {
+  edit(villain: Villain): void {
     this._goTo('EditVillain', {
       id: villain['_id'],
       // villain: JSON.stringify(villain)
     });
   }
 
-  newVillain() {
+  add() {
     this._goTo('NewVillain', {});
   }
 
-  deleteVillain(villain: Villain): void {
-    this._villainService.deleteVillain(villain['_id'])
+  delete(villain: Villain): void {
+    this._villainsService.deleteVillain(villain['_id'])
       .subscribe(
         (villain: Villain) => {
           let index = this.list.indexOf(villain);

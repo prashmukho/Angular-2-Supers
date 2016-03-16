@@ -4,7 +4,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {VillainsListComponent} from './villains-list.component';
 import {EditVillainComponent} from './edit-villain.component';
 import {NewVillainComponent} from './new-villain.component';
-import {VillainService} from './villains.service';
+import {VillainsService} from './villains.service';
 import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
@@ -12,7 +12,7 @@ import {ActiveLinkService} from '../../active-link.service';
     <router-outlet></router-outlet>
   `,
   directives: [ROUTER_DIRECTIVES],
-  providers: [VillainService]
+  providers: [VillainsService]
 })
 @RouteConfig([
   {

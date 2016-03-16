@@ -1,7 +1,7 @@
 <div class="supers-list">
   <h2>Here, there be baddies...</h2>
   <button type="button" class="btn btn-default" style="margin-bottom:10px"
-    (click)="newVillain()">
+    (click)="add()">
     Add
   </button>
   <ul class="list-group">
@@ -17,11 +17,11 @@
         <div class='col-xs-6'>
           <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-default"
-              (click)="editVillain(model)">
+              (click)="edit(model)">
               Edit
             </button>
             <button type="button" class="btn btn-default"
-              (click)="deleteVillain(model)">
+              (click)="delete(model)">
               Delete
             </button>
           </div>

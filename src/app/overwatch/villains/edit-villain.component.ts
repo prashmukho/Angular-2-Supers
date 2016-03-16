@@ -3,7 +3,7 @@ import {NgForm} from 'angular2/common';
 import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainService} from './villains.service';
+import {VillainsService} from './villains.service';
 import {DialogService} from '../../dialog.service';
 
 @Component({
@@ -12,10 +12,10 @@ import {DialogService} from '../../dialog.service';
 export class EditVillainComponent implements OnInit, CanDeactivate {
   model: Villain;
   edited: boolean = false;
-  action: string = 'Edit';
+  action: string = 'Edit Villain';
 
   constructor(
-    private _villainService: VillainService,
+    private _villainsService: VillainsService,
     private _routeParams: RouteParams,
     private _router: Router,
     private _dialogService: DialogService
@@ -28,7 +28,7 @@ export class EditVillainComponent implements OnInit, CanDeactivate {
     // }
 
     let id = this._routeParams.get('id');
-    this._villainService.getVillain(id)
+    this._villainsService.getVillain(id)
       .subscribe(
         (villain: Villain) => {
           if (!villain) {
@@ -56,7 +56,7 @@ export class EditVillainComponent implements OnInit, CanDeactivate {
       
   save() {
     this.edited = false;
-    this._villainService.updateVillain(this.model)
+    this._villainsService.updateVillain(this.model)
       .subscribe(
         (villain: Villain) => {
           console.log('updated', villain);

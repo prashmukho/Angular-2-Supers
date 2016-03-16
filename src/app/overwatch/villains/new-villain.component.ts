@@ -3,7 +3,7 @@ import {NgForm} from 'angular2/common';
 import {Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainService} from './villains.service'
+import {VillainsService} from './villains.service'
 import {DialogService} from '../../dialog.service';
 
 @Component({
@@ -16,11 +16,11 @@ export class NewVillainComponent implements CanDeactivate {
     alias:'' 
   };
   edited: boolean = false;
-  action: string = 'New';
+  action: string = 'Add Villain';
 
   constructor(
     private _router: Router,
-    private _villainService: VillainService,
+    private _villainsService: VillainsService,
     private _dialogService: DialogService
   ) {}
 
@@ -39,7 +39,7 @@ export class NewVillainComponent implements CanDeactivate {
 
   save(): void {
     this.edited = false;
-    this._villainService.addVillain(this.model)
+    this._villainsService.addVillain(this.model)
       .subscribe(
         (villain: Villain) => {
           console.log('saved', villain);
