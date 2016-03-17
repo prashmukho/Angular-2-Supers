@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {NgForm} from 'angular2/common';
 import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 
@@ -9,23 +9,32 @@ import {DialogService} from '../../dialog.service';
 @Component({
   template: require('./templates/crisis-detail.html')
 })
-export class NewCrisisComponent { 
-  crisis = { 
-    title:'', 
-    begin: null
-  };
+export class EditCrisisComponent implements OnInit { 
+  crisis: Crisis;
   edited: boolean = false;
-  action: string = 'Add Crisis';
-  villainId: string;
+  action: string = 'Edit Crisis';
 
   constructor(
     private _router: Router,
     private _routeParams: RouteParams,
     private _crisesService: CrisesService,
     private _dialogService: DialogService
-  ) {
-    this.villainId = this._routeParams.get('villainId');
-    this.crisis.begin = this._dateString(new Date());
+  ) {}
+
+  ngOnInit() {
+    let id = this._routeParams.get('id');
+    this._crisesService.getCrisis(id)
+      .subscribe(
+        (crisis: Crisis) => {
+          if (!crisis) {
+            this._goTo('CrisesList', {});
+            return false;
+          }
+          this.crisis = crisis;
+          this.crisis.begin = crisis.begin.match(/^(\d{4}-\d{2}-\d{2})/)[1];
+        },
+        error => console.error('Invalid ID!')
+      );
   }
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
@@ -35,23 +44,23 @@ export class NewCrisisComponent {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('CrisesList', {});
+    this._goTo('CrisesList', { id: this.crisis['_id'] });
   }
 
   save(): void {
-    this._crisesService.addCrisis(this.crisis, this.villainId)
+    this._crisesService.updateCrisis(this.crisis)
       .subscribe(
         (crisis: Crisis) => {
           console.log('saved', crisis);
           this.edited = false;
-          this._goTo('CrisesList', {});
+          this._goTo('CrisesList', { _id: crisis['_id'] });
         },
         error => console.error(error)
       );
   }
 
-  hasCommenced() { 
-    return false; 
+  hasCommenced() {
+    return true;
   }
 
   private _goTo(routeName, params) {

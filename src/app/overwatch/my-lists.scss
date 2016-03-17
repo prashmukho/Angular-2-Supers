@@ -1,6 +1,6 @@
 $row-height: 32.8977px; /* from inspection */
 
-.supers-list li {
+[class$="-list"] li {
   .row .col-xs-6 span.name {
     line-height: $row-height; /* vertically center text */
     word-wrap: break-word;
@@ -8,7 +8,7 @@ $row-height: 32.8977px; /* from inspection */
 }
 
 @media (min-width: 500px) { 
-  .supers-list li {
+  [class$="-list"] li {
     .row .col-xs-6 {
       .btn-group.actions {
         float: right !important;
@@ -18,7 +18,7 @@ $row-height: 32.8977px; /* from inspection */
 }
 
 @media (max-width: 500px) { 
-  .supers-list li {
+  [class$="-list"] li {
     text-align: center !important;
 
     .row .col-xs-6 {
@@ -28,7 +28,7 @@ $row-height: 32.8977px; /* from inspection */
   }
 }
 
-.supers-list li.selected {
+[class$="-list"] li.selected {
   background-color: #ccc;
   color: white;
 }

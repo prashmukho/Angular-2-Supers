@@ -42,10 +42,7 @@ export class EditVillainComponent implements OnInit, CanDeactivate {
   }
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
-    if (!this.model || !this.edited) {
-      return true;
-    }
-
+    if (!this.model || !this.edited) return true;
     return this._dialogService.confirm('Ignore changes?');
   }
 

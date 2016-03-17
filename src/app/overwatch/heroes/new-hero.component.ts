@@ -25,10 +25,7 @@ export class NewHeroComponent implements CanDeactivate {
   ) {}
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
-    if (!this.edited) {
-      return true;
-    }
-
+    if (!this.edited) return true;
     return this._dialogService.confirm('Ignore changes?');
   }
 

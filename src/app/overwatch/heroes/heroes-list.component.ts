@@ -36,15 +36,15 @@ export class HeroesListComponent implements OnInit {
     return this.selectedId === id;
   }
   
-  edit(hero: Hero): void {
-    this._goTo('EditHero', { id: hero['_id'] });
+  edit(id: string) {
+    this._goTo('EditHero', { id: id });
   }
 
   add() {
     this._goTo('NewHero', {});
   }
 
-  delete(heroId: string): void {
+  delete(heroId: string) {
     this._heroesService.deleteHero(heroId)
       .subscribe(
         (hero: Hero) => {

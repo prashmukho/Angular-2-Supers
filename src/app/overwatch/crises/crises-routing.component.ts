@@ -3,6 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {CrisesListComponent} from './crises-list.component';
 import {NewCrisisComponent} from './new-crisis.component';
+import {EditCrisisComponent} from './edit-crisis.component';
 import {CrisesService} from './crises.service';
 import {ActiveLinkService} from '../../active-link.service';
 
@@ -24,6 +25,11 @@ import {ActiveLinkService} from '../../active-link.service';
     path: '/villains/:villainId/crises/new',
     name: 'NewCrisis',
     component: NewCrisisComponent
+  },
+  {
+    path: '/crises/:id',
+    name: 'EditCrisis',
+    component: EditCrisisComponent
   }
 ])
 export class CrisesRoutingComponent {

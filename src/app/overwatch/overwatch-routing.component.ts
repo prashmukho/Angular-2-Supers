@@ -7,7 +7,7 @@ import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
 import {CrisesRoutingComponent} from './crises/crises-routing.component';
 import {SupersService} from './supers.service.ts'
 
-import './supers-list.scss';
+import './my-lists.scss';
 
 @Component({
   template: `
@@ -20,18 +20,18 @@ import './supers-list.scss';
   {
     path: '/villains/...',
     name: 'VillainsCenter',
-    component: VillainsRoutingComponent,
-    useAsDefault: true
+    component: VillainsRoutingComponent
   },
   {
     path: '/heroes/...',
     name: 'HeroesCenter',
-    component: HeroesRoutingComponent,
+    component: HeroesRoutingComponent
   },
   {
     path: '/...',
     name: 'CrisesCenter',
     component: CrisesRoutingComponent,
+    useAsDefault: true
   }
 ])
 export class OverwatchRoutingComponent implements OnInit {

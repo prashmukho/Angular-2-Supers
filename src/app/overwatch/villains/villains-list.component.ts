@@ -36,9 +36,9 @@ export class VillainsListComponent implements OnInit {
     return this.selectedId === id;
   }
   
-  edit(villain: Villain): void {
+  edit(id: string) {
     this._goTo('EditVillain', {
-      id: villain['_id'],
+      id: id,
       // villain: JSON.stringify(villain)
     });
   }
@@ -47,7 +47,7 @@ export class VillainsListComponent implements OnInit {
     this._goTo('NewVillain', {});
   }
 
-  delete(villainId: string): void {
+  delete(villainId: string) {
     this._villainsService.deleteVillain(villainId)
       .subscribe(
         (villain: Villain) => {

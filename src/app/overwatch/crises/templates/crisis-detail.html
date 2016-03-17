@@ -1,39 +1,66 @@
 <div class="crisis-detail" *ngIf="crisis">
-  <h2>Add Crisis</h2>
+  <h2>{{ action }}</h2>
   <form role="form" #detailForm="ngForm">
     <div class="row">
-      <!-- <div class="col-xs-8"> -->
-        <div class="form-group col-xs-8">
-          <label for="name">Title</label>
-          <input type="text" class="form-control" required
-            [(ngModel)]="crisis.title" 
-            ngControl="title"  #title="ngForm" />
-          <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
-            Title is required
-          </div>
+      <div class="form-group col-xs-8">
+        <label for="name">Title</label>
+        <input type="text" class="form-control" required
+          [(ngModel)]="crisis.title" 
+          ngControl="title"  #title="ngForm" />
+        <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+          Title is required
         </div>
-      <!-- </div> -->
-      <!-- <div class="col-xs-4"> -->
-        <div class="form-group col-xs-4">
-          <label for="begin">Commencement</label>
-          <input type="date" class="form-control"
-            [(ngModel)]="crisis.begin" />
-        </div>
-      <!-- </div> -->
+      </div>
+      <div class="form-group col-xs-4">
+        <label for="begin">Commencement</label>
+        <input type="date" id='begin' class="form-control"
+          [(ngModel)]="crisis.begin" 
+          [disabled]="hasCommenced()" />
+      </div>
     </div>
     <!-- <div class="form-group">
       <label for="end">Conclusion</label>
       <input type="date" class="form-control"
         [(ngModel)]="crisis.end" />
     </div> -->
-    <button type="button" class="btn btn-primary" 
-      [disabled]="!detailForm.form.valid"
-      (click)="save()">
-      Save
-    </button>
-    <button type="button" class="btn btn-default" 
-      (click)="cancel(detailForm.form.dirty)">
-      Cancel
-    </button>
   </form>
+  <div *ngIf="crisis.villains.length">
+    <h4>Villains:</h4>
+    <table class="table table-condensed">
+      <tr>
+        <th>Name</th>
+        <th>Power</th>
+        <th>Strength</th>
+      </tr>
+      <tr *ngFor="#villain of crisis.villains">
+        <td>{{ villain.name }}</td>
+        <td>{{ villain.power.name }}</td>
+        <td>{{ villain.power.strength }}</td>
+      </tr>
+    </table>
+  </div>
+  <div *ngIf="crisis.heroes.length">
+    <h4>Villains:</h4>
+    <table class="table table-condensed">
+      <tr>
+        <th>Name</th>
+        <th>Power</th>
+        <th>Strength</th>
+      </tr>
+      <tr *ngFor="#hero of crisis.heroes">
+        <td>{{ hero.name }}</td>
+        <td>{{ hero.power.name }}</td>
+        <td>{{ hero.power.strength }}</td>
+      </tr>
+    </table>
+  </div>
+  <button type="button" class="btn btn-primary" 
+    [disabled]="!detailForm.form.valid"
+    (click)="save()">
+    Save
+  </button>
+  <button type="button" class="btn btn-default" 
+    (click)="cancel(detailForm.form.dirty)">
+    Cancel
+  </button>
 </div>
