@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Super = require('../db/init').Super;
+var Crisis = require('../db/init').Crisis;
 
 var express = require('express');
 var router = express.Router();
@@ -15,8 +16,7 @@ router.get('/:collection', function(req, res) {
   Super
     .find({ 
       category: pluralize(collection, 1)
-    }, '-category -crises', 
-    function (err, villains) {
+    }, '-category -crises', function (err, villains) {
       if (err) console.log(err);
       res.send({ data: villains });
     });
@@ -28,10 +28,7 @@ router.post('/:collection', function(req, res) {
   model.category = pluralize(req.params.collection, 1);
   model.save(function (err) {
     if (err) console.log(err);
-    res.send({ 
-      // not sending fields - category, crises
-      data: model.publicSuper()
-    });
+    res.send({ data: model.publicSuper() });
   });
 });
 
@@ -65,11 +62,46 @@ router.put('/:collection/:id', function(req, res) {
 router.delete('/:collection/:id', function(req, res) {
   var id = mongoose.Types.ObjectId(req.params.id);
   Super
-    .findByIdAndRemove(id, {
-      select: '-category -crises'
-    }, function (err, model) {
+    .findById(id, function (err, model) {
       if (err) console.log(err);
-      res.send({ data: model });
+      
+      var q;
+      if (model.category === 'villain') {
+        q = Crisis.update({
+          _id: { $in: model.crises } 
+        }, {
+          $pull: { villains: model._id }
+        }, { 
+          multi: true 
+        });
+      } else if (model.category === 'hero') {
+        q = Crisis.update({
+          _id: { $in: model.crises } 
+        }, {
+          $pull: { heroes: model._id }
+        }, { 
+          multi: true 
+        });
+      }
+      q.exec(function (err) {
+        if (err) console.log(err);
+
+        model.remove(function (err) {
+          if (err) console.log(err);
+
+          if (model.category === 'villain') {
+            Crisis.update({ 
+              villains: { $size: 0 } 
+            }, {
+              $currentDate: { end: true }
+            }, function (err) {
+              if (err) console.log(err);
+            });
+          } 
+          
+          res.send({ data: model.publicSuper() }); 
+        });
+      });
     });
 });
 
