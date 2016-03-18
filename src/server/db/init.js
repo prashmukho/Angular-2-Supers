@@ -26,6 +26,15 @@ var crisisSchema = new Schema({
   heroes: [{ type: Schema.Types.ObjectId, ref: 'Super' }]
 });
 
+crisisSchema.methods.publicCrisis = function () {
+  return {
+    _id: this._id,
+    title: this.title,
+    begin: this.begin,
+    end: this.end
+  };
+};
+
 module.exports = {
   Super: mongoose.model('Super', superSchema),
   Crisis: mongoose.model('Crisis', crisisSchema)

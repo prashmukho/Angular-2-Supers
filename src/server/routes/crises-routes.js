@@ -9,8 +9,9 @@ var router = express.Router();
 // #index
 router.get('/crises', function(req, res) {
   Crisis
-    .find(function (err, crises) {
+    .find({}, '-villains -heroes', function (err, crises) {
       if (err) console.log(err);
+
       res.send({ data: crises });
     });
 });
@@ -31,7 +32,8 @@ router.post('/villains/:id/crises', function(req, res) {
         villain.crises.push(crisis);
         villain.save(function (err) {
           if (err) console.log(err);
-          res.send({ data: crisis });
+
+          res.send({ data: crisis.publicCrisis() });
         });
       });
     });
@@ -45,6 +47,7 @@ router.get('/crises/:id', function(req, res) {
     .populate('villains heroes')
     .exec(function (err, crisis) {
       if (err) console.log(err);
+
       res.send({ data: crisis });
     });
 });
@@ -54,13 +57,14 @@ router.get('/:collection/:id/crises/uninvolved', function (req, res) {
   var superId = mongoose.Types.ObjectId(req.params.id);
   var collection = req.params.collection;
   var q;
-  if (collection === 'heroes') {
-    q = Crisis.find({ heroes: { $ne: superId } });
-  } else if (collection === 'villains') {
-    q = Crisis.find({ villains: { $ne: superId } });
+  if (collection === 'villains') {
+    q = Crisis.find({ villains: { $ne: superId } }, '-villains -heroes');
+  } else if (collection === 'heroes') {
+    q = Crisis.find({ heroes: { $ne: superId } }, '-villains -heroes');
   }
   q.exec(function (err, crises) {
     if (err) console.log(err);
+
     res.send({ data: crises })
   });
 });
@@ -74,16 +78,19 @@ router.put('/heroes/:heroId/crises/:crisisId', function(req, res) {
       $addToSet: { crises: crisisId }
     }, {
       new: true
-    }, function (err, hero) {
+    }, function (err) {
       if (err) console.log(err);
+
       Crisis
         .findByIdAndUpdate(crisisId, {
           $addToSet: { heroes: heroId }
         }, {
-          new: true
+          new: true,
+          select: '-villains -heroes'
         }, function (err, crisis) {
           if (err) console.log(err);
-          res.send({ data: { hero: hero, crisis: crisis } });
+
+          res.send({ data: crisis });
         })
     });
 });
@@ -96,10 +103,37 @@ router.put('/crises/:id', function(req, res) {
       $set: req.body.crisis 
     }, {
       new: true, // return updated object
-      runValidators: true // TODO: date validation
+      runValidators: true, // TODO: date validation
+      select: '-villains -heroes'
     }, function (err, crisis) {
       if (err) console.log(err);
+
       res.send({ data: crisis });
+    });
+});
+
+// #delete
+router.delete('/crises/:id', function(req, res) {
+  var crisisId = mongoose.Types.ObjectId(req.params.id);
+  Crisis
+    .findById(crisisId, function (err, crisis) {
+      if (err) console.log(err);
+
+      superIds = crisis.villains.concat(crisis.heroes);
+      Super.update({
+        _id: { $in: superIds } 
+      }, {
+        $pull: { crises: crisis._id }
+      }, {
+        multi: true
+      }, function (err) {
+        if (err) console.log(err);
+        crisis.remove(function (err) {
+          if (err) console.log(err);
+
+          res.send({ data: crisis.publicCrisis() })
+        });
+      })
     });
 });
 

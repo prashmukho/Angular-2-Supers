@@ -29,7 +29,17 @@ export class CrisesListComponent implements OnInit {
     this._goTo('EditCrisis', { id: id });
   }
 
-  delete() {}
+  delete(id: string) {
+    this._crisesService.deleteCrisis(id)
+      .subscribe(
+        (crisis: Crisis) => {
+          let index = this.crises.indexOf(crisis);
+          this.crises.splice(index, 1);
+          console.log('deleted', crisis);
+        },
+        error => console.error(error)
+      );
+  }
 
   private _goTo(routeName, params) {
     this._router.navigate([routeName, params]);

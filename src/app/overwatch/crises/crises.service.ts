@@ -21,6 +21,12 @@ export class CrisesService {
       .catch(this._handleError);
   }
 
+  getUninvolvedCrises(collection: string, id: string): Rx.Observable<Crisis[]> {
+    return this._http.get(`api/v1/${collection}/${id}/crises/uninvolved`)
+      .map(res => res.json().data)
+      .catch(this._handleError);
+  }
+
   addCrisis(crisis: any, villainId: string): Rx.Observable<Crisis> {
     let body = JSON.stringify({ crisis });
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -41,8 +47,11 @@ export class CrisesService {
       .catch(this._handleError);
   }
 
-  getUninvolvedCrises(collection: string, id: string): Rx.Observable<Crisis[]> {
-    return this._http.get(`api/v1/${collection}/${id}/crises/uninvolved`)
+  deleteCrisis(id: string): Rx.Observable<Crisis> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this._http.delete(`api/v1/crises/${id}`, options)
       .map(res => res.json().data)
       .catch(this._handleError);
   }
