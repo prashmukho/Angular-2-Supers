@@ -41,6 +41,12 @@ export class CrisesService {
       .catch(this._handleError);
   }
 
+  getUninvolvedCrises(collection: string, id: string): Rx.Observable<Crisis[]> {
+    return this._http.get(`api/v1/${collection}/${id}/crises/uninvolved`)
+      .map(res => res.json().data)
+      .catch(this._handleError);
+  }
+
   private _handleError(error: Response) {
     return Rx.Observable.throw(error || 'Server error');
   }

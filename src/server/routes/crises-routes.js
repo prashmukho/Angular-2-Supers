@@ -31,8 +31,8 @@ router.post('/villains/:id/crises', function(req, res) {
         villain.crises.push(crisis);
         villain.save(function (err) {
           if (err) console.log(err);
+          res.send({ data: crisis });
         });
-        res.send({ data: crisis });
       });
     });
 });
@@ -49,10 +49,44 @@ router.get('/crises/:id', function(req, res) {
     });
 });
 
-// Adding a Crisis doc to a hero's crises array as a ref
-// router.post('/heroes/:id/crises', function(req, res) {
-//   var heroId = mongoose.Types.ObjectId(req.params.id);
-// });
+// Get crises that a hero/villain is not already engaged in
+router.get('/:collection/:id/crises/uninvolved', function (req, res) {
+  var superId = mongoose.Types.ObjectId(req.params.id);
+  var collection = req.params.collection;
+  var q;
+  if (collection === 'heroes') {
+    q = Crisis.find({ heroes: { $ne: superId } });
+  } else if (collection === 'villains') {
+    q = Crisis.find({ villains: { $ne: superId } });
+  }
+  q.exec(function (err, crises) {
+    if (err) console.log(err);
+    res.send({ data: crises })
+  });
+});
+
+// Associating a hero and a crisis (both exist) when a challenge is made
+router.put('/heroes/:heroId/crises/:crisisId', function(req, res) {
+  var heroId = mongoose.Types.ObjectId(req.params.heroId);
+  var crisisId = mongoose.Types.ObjectId(req.params.crisisId);
+  Super
+    .findByIdAndUpdate(heroId, {
+      $addToSet: { crises: crisisId }
+    }, {
+      new: true
+    }, function (err, hero) {
+      if (err) console.log(err);
+      Crisis
+        .findByIdAndUpdate(crisisId, {
+          $addToSet: { heroes: heroId }
+        }, {
+          new: true
+        }, function (err, crisis) {
+          if (err) console.log(err);
+          res.send({ data: { hero: hero, crisis: crisis } });
+        })
+    });
+});
 
 // #update
 router.put('/crises/:id', function(req, res) {
@@ -62,7 +96,7 @@ router.put('/crises/:id', function(req, res) {
       $set: req.body.crisis 
     }, {
       new: true, // return updated object
-      runValidators: true
+      runValidators: true // TODO: date validation
     }, function (err, crisis) {
       if (err) console.log(err);
       res.send({ data: crisis });

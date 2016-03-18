@@ -5,7 +5,8 @@ import {LoginConfig} from '../app.component.ts'
 import {VillainsRoutingComponent} from './villains/villains-routing.component';
 import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
 import {CrisesRoutingComponent} from './crises/crises-routing.component';
-import {SupersService} from './supers.service.ts'
+import {SupersService} from './supers.service.ts';
+import {CrisesService} from './crises/crises.service.ts';
 
 import './my-lists.scss';
 
@@ -14,7 +15,10 @@ import './my-lists.scss';
     <router-outlet></router-outlet>
   `,
   directives: [ROUTER_DIRECTIVES],
-  providers: [SupersService]
+  providers: [
+    SupersService,
+    CrisesService
+  ]
 })
 @RouteConfig([
   {

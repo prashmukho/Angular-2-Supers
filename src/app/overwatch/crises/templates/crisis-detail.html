@@ -24,36 +24,30 @@
         [(ngModel)]="crisis.end" />
     </div> -->
   </form>
-  <div *ngIf="crisis.villains.length">
-    <h4>Villains:</h4>
-    <table class="table table-condensed">
-      <tr>
-        <th>Name</th>
-        <th>Power</th>
-        <th>Strength</th>
-      </tr>
-      <tr *ngFor="#villain of crisis.villains">
-        <td>{{ villain.name }}</td>
-        <td>{{ villain.power.name }}</td>
-        <td>{{ villain.power.strength }}</td>
-      </tr>
-    </table>
-  </div>
-  <div *ngIf="crisis.heroes.length">
-    <h4>Villains:</h4>
-    <table class="table table-condensed">
-      <tr>
-        <th>Name</th>
-        <th>Power</th>
-        <th>Strength</th>
-      </tr>
-      <tr *ngFor="#hero of crisis.heroes">
-        <td>{{ hero.name }}</td>
-        <td>{{ hero.power.name }}</td>
-        <td>{{ hero.power.strength }}</td>
-      </tr>
-    </table>
-  </div>
+  <table class="table table-condensed"
+    *ngIf="crisis.villains.length || crisis.heroes.length">
+    <tr>
+      <th>Name</th>
+      <th>Power</th>
+      <th>Strength</th>
+    </tr>
+    <tr class='danger' *ngIf="crisis.villains.length">
+      <td colspan="3">Villains:</td>
+    </tr>
+    <tr *ngFor="#villain of crisis.villains">
+      <td>{{ villain.name }}</td>
+      <td>{{ villain.power.name }}</td>
+      <td>{{ villain.power.strength }}</td>
+    </tr>
+    <tr class='success' *ngIf="crisis.heroes.length">
+      <td colspan="3">Heroes:</td>
+    </tr>
+    <tr *ngFor="#hero of crisis.heroes">
+      <td>{{ hero.name }}</td>
+      <td>{{ hero.power.name }}</td>
+      <td>{{ hero.power.strength }}</td>
+    </tr>
+  </table>
   <button type="button" class="btn btn-primary" 
     [disabled]="!detailForm.form.valid"
     (click)="save()">

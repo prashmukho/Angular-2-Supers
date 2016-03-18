@@ -26,7 +26,6 @@ var crisisSchema = new Schema({
   heroes: [{ type: Schema.Types.ObjectId, ref: 'Super' }]
 });
 
-
 module.exports = {
   Super: mongoose.model('Super', superSchema),
   Crisis: mongoose.model('Crisis', crisisSchema)

@@ -47,8 +47,8 @@ export class VillainsListComponent implements OnInit {
     this._goTo('NewVillain', {});
   }
 
-  delete(villainId: string) {
-    this._villainsService.deleteVillain(villainId)
+  delete(id: string) {
+    this._villainsService.deleteVillain(id)
       .subscribe(
         (villain: Villain) => {
           let index = this.list.indexOf(villain);
@@ -59,11 +59,11 @@ export class VillainsListComponent implements OnInit {
       );
   }
 
-  instigate(villainId) {
+  instigate(id: string) {
     this._router.parent.navigate([
       'CrisesCenter', 
       'NewCrisis', 
-      { villainId: villainId }
+      { villainId: id }
     ]);
   }
 

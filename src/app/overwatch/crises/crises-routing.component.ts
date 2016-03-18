@@ -11,8 +11,7 @@ import {ActiveLinkService} from '../../active-link.service';
   template: `
     <router-outlet></router-outlet>
   `,
-  directives: [ROUTER_DIRECTIVES],
-  providers: [CrisesService]
+  directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
   {

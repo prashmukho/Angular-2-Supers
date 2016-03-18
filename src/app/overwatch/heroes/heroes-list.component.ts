@@ -44,8 +44,8 @@ export class HeroesListComponent implements OnInit {
     this._goTo('NewHero', {});
   }
 
-  delete(heroId: string) {
-    this._heroesService.deleteHero(heroId)
+  delete(id: string) {
+    this._heroesService.deleteHero(id)
       .subscribe(
         (hero: Hero) => {
           let index = this.list.indexOf(hero);
@@ -53,6 +53,13 @@ export class HeroesListComponent implements OnInit {
           console.log('deleted', hero);
         },
         error => console.error(error)
+      );
+  }
+
+  challenge(id: string) {
+    this._heroesService.getUninvolvedCrises(id)
+      .subscribe(
+        crises => console.log(crises)
       );
   }
 
