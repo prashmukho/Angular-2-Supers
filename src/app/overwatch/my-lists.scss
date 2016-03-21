@@ -1,34 +1,62 @@
 $row-height: 32.8977px; /* from inspection */
 
-[class$="-list"] li {
-  .row .col-xs-6 span.name {
-    line-height: $row-height; /* vertically center text */
-    word-wrap: break-word;
-  }
-}
+[class$="-list"] 
+  li {
+    .row {
+      .col-xs-4 {
+        span.name {
+          line-height: $row-height; /* vertically center text */
+          word-wrap: break-word;
+        }
+      }
 
-@media (min-width: 500px) { 
-  [class$="-list"] li {
-    .row .col-xs-6 {
-      .btn-group.actions {
-        float: right !important;
+      .col-xs-8 {
+        .btn-group 
+          .dropdown-menu {
+            .uninvolved-crisis a { cursor: pointer; }
+
+            .status {
+              pointer-events: none;
+              cursor: default;
+            }
+
+            .spinner { text-align: center; }
+          }
       }
     }
   }
+
+@media (min-width: 510px) { 
+  [class$="-list"] 
+    li
+      .row 
+        [class^="col-xs-"]
+          .btn-group.actions {
+            float: right !important;
+          }
 }
 
-@media (max-width: 500px) { 
-  [class$="-list"] li {
-    text-align: center !important;
+@media (max-width: 509px) { 
+  [class$="-list"] 
+    li {
+      text-align: center !important;
 
-    .row .col-xs-6 {
-      width: 100%;
-      clear: both !important;
+      .row 
+        [class^="col-xs-"] {
+          width: 100%;
+          clear: both !important;
+        }
     }
-  }
 }
 
-[class$="-list"] li.selected {
-  background-color: #ccc;
-  color: white;
-}
+[class$="-list"] 
+  li.selected {
+    background-color: #ccc;
+    color: white;
+
+    .row 
+      .col-xs-8 
+        .btn-group 
+          .dropdown-menu 
+            .spinner { color: black; }
+  }

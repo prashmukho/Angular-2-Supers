@@ -3,9 +3,12 @@ import {RouteParams, Router} from 'angular2/router';
 
 import {Villain} from './villain';
 import {VillainsService} from './villains.service';
+import {InvolvementComponent} from '../involvement.component';
+import {Crisis} from '../crises/crisis';
 
 @Component({
-  template: require('../templates/supers-list.html')
+  template: require('../templates/supers-list.html'),
+  directives: [InvolvementComponent]
 })
 export class VillainsListComponent implements OnInit {
   title = 'Here, there be baddies...';
@@ -37,14 +40,11 @@ export class VillainsListComponent implements OnInit {
   }
   
   edit(id: string) {
-    this._goTo('EditVillain', {
-      id: id,
-      // villain: JSON.stringify(villain)
-    });
+    this._goTo(this._router, ['EditVillain', { id: id }]);
   }
 
   add() {
-    this._goTo('NewVillain', {});
+    this._goTo(this._router, ['NewVillain']);
   }
 
   delete(id: string) {
@@ -60,14 +60,22 @@ export class VillainsListComponent implements OnInit {
   }
 
   instigate(id: string) {
-    this._router.parent.navigate([
-      'CrisesCenter', 
-      'NewCrisis', 
-      { villainId: id }
+    this._goTo(this._router.parent, [
+      'CrisesCenter', 'NewCrisis', { id: id }
     ]);
   }
 
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
+  involve($event)  {
+    this._villainsService.involveInCrisis($event.superId, $event.crisisId)
+      .subscribe(
+        (crisis: Crisis) => this._goTo(this._router.parent, [
+          'CrisesCenter', 'EditCrisis', { id: crisis['_id'] }
+        ]),
+        error => console.error(error)
+      );
+  }
+
+  private _goTo(router, routeArray) {
+    router.navigate(routeArray);
   }
 }

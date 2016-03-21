@@ -56,12 +56,12 @@ router.get('/crises/:id', function(req, res) {
 router.get('/:collection/:id/crises/uninvolved', function (req, res) {
   var superId = mongoose.Types.ObjectId(req.params.id);
   var collection = req.params.collection;
+  
   var q;
-  if (collection === 'villains') {
+  if (collection === 'villains')
     q = Crisis.find({ villains: { $ne: superId } }, '-villains -heroes');
-  } else if (collection === 'heroes') {
+  else if (collection === 'heroes')
     q = Crisis.find({ heroes: { $ne: superId } }, '-villains -heroes');
-  }
   q.exec(function (err, crises) {
     if (err) console.log(err);
 
@@ -70,20 +70,25 @@ router.get('/:collection/:id/crises/uninvolved', function (req, res) {
 });
 
 // Associating a hero and a crisis (both exist) when a challenge is made
-router.put('/heroes/:heroId/crises/:crisisId', function(req, res) {
-  var heroId = mongoose.Types.ObjectId(req.params.heroId);
+router.put('/:collection/:id/crises/:crisisId', function(req, res) {
+  var superId = mongoose.Types.ObjectId(req.params.id);
+  var collection = req.params.collection;
   var crisisId = mongoose.Types.ObjectId(req.params.crisisId);
+  
+  var supersSet;
+  if (collection === 'villains')
+    supersSet = { villains: superId };
+  else if (collection === 'heroes')
+    supersSet = { heroes: superId };
   Super
-    .findByIdAndUpdate(heroId, {
+    .findByIdAndUpdate(superId, {
       $addToSet: { crises: crisisId }
-    }, {
-      new: true
     }, function (err) {
       if (err) console.log(err);
 
       Crisis
         .findByIdAndUpdate(crisisId, {
-          $addToSet: { heroes: heroId }
+          $addToSet: supersSet
         }, {
           new: true,
           select: '-villains -heroes'
@@ -91,7 +96,7 @@ router.put('/heroes/:heroId/crises/:crisisId', function(req, res) {
           if (err) console.log(err);
 
           res.send({ data: crisis });
-        })
+        });
     });
 });
 

@@ -6,6 +6,8 @@ import {VillainsRoutingComponent} from './villains/villains-routing.component';
 import {HeroesRoutingComponent} from './heroes/heroes-routing.component';
 import {CrisesRoutingComponent} from './crises/crises-routing.component';
 import {SupersService} from './supers.service.ts';
+import {VillainsService} from './villains/villains.service';
+import {HeroesService} from './heroes/heroes.service';
 import {CrisesService} from './crises/crises.service.ts';
 
 import './my-lists.scss';
@@ -17,6 +19,8 @@ import './my-lists.scss';
   directives: [ROUTER_DIRECTIVES],
   providers: [
     SupersService,
+    VillainsService,
+    HeroesService,
     CrisesService
   ]
 })

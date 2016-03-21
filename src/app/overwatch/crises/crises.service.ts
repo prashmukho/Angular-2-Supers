@@ -56,6 +56,15 @@ export class CrisesService {
       .catch(this._handleError);
   }
 
+  involveInCrisis(collection, superId, crisisId): Rx.Observable<Crisis> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this._http.put(`api/v1/${collection}/${superId}/crises/${crisisId}`, null, options)
+      .map(res => res.json().data)
+      .catch(this._handleError);
+  }
+
   private _handleError(error: Response) {
     return Rx.Observable.throw(error || 'Server error');
   }

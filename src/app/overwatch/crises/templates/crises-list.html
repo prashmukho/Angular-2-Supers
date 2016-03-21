@@ -1,15 +1,15 @@
-<div class="crisis-list">
+<div class="crises-list">
   <h3>{{ title }}</h3>
   <ul class="list-group">
     <li class="list-group-item"
       *ngFor="#crisis of crises">
       <div class='row'>
-        <div class='col-xs-6'>
+        <div class='col-xs-4'>
           <span class="name">
             {{ crisis.title }}
           </span>
         </div>
-        <div class='col-xs-6'>
+        <div class='col-xs-8'>
           <div class="btn-group actions" role="group" aria-label="...">
             <button type="button" class="btn btn-default"
               (click)="edit(crisis['_id'])">

@@ -3,15 +3,20 @@ import {RouteParams, Router} from 'angular2/router';
 
 import {Hero} from './hero';
 import {HeroesService} from './heroes.service';
+import {InvolvementComponent} from '../involvement.component';
+import {Crisis} from '../crises/crisis';
 
 @Component({
-  template: require( '../templates/supers-list.html')
+  template: require( '../templates/supers-list.html'),
+  directives: [InvolvementComponent]
 })
 export class HeroesListComponent implements OnInit {
   title = 'Here, there be saviours...';
   list: Hero[];
   selectedId: string;
   category = 'hero';
+  uninvolvedCrises: Crisis[] = [];
+  uninvolvedText: string = 'Loading...';
 
   constructor(
     private _heroesService: HeroesService,
@@ -22,7 +27,7 @@ export class HeroesListComponent implements OnInit {
   ngOnInit() {
     this._heroesService.getHeroes()
       .subscribe(
-        list => {
+        (list: Hero[]) => {
           this.list = list;
 
           let id = this._routeParams.get('id');
@@ -37,11 +42,11 @@ export class HeroesListComponent implements OnInit {
   }
   
   edit(id: string) {
-    this._goTo('EditHero', { id: id });
+    this._goTo(this._router, ['EditHero', { id: id }]);
   }
 
   add() {
-    this._goTo('NewHero', {});
+    this._goTo(this._router, ['NewHero']);
   }
 
   delete(id: string) {
@@ -56,14 +61,17 @@ export class HeroesListComponent implements OnInit {
       );
   }
 
-  challenge(id: string) {
-    this._heroesService.getUninvolvedCrises(id)
+  involve($event) {
+    this._heroesService.involveInCrisis($event.superId, $event.crisisId)
       .subscribe(
-        crises => console.log(crises)
+        (crisis: Crisis) => this._goTo(this._router.parent, [
+          'CrisesCenter', 'EditCrisis', { id: crisis['_id'] }
+        ]),
+        error => console.error(error)
       );
   }
 
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
+  private _goTo(router, routeArray) {
+    router.navigate(routeArray);
   }
 }

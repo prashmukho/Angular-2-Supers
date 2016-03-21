@@ -1,0 +1,18 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-warning dropdown-toggle" 
+    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+    (click)="getUninvolvedCrises(model['_id'], $event)">
+    Involve <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li class="uninvolved-crisis" *ngFor="#crisis of uninvolvedCrises">
+      <a (click)="involve(model['_id'], crisis['_id'])">{{ crisis.title }}</a>
+    </li>
+    <li *ngIf="!uninvolvedCrises.length">
+      <a class="status">{{ uninvolvedText }}</a>
+    </li>
+    <li class="spinner">
+      <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </li>
+  </ul>
+</div>

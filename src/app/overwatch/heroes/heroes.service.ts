@@ -3,8 +3,8 @@ import {Response} from 'angular2/http';
 import * as Rx from "rxjs/Rx"
 
 import {Hero} from './hero';
-import {Crisis} from '../crises/crisis';
 import {SupersService} from '../supers.service';
+import {Crisis} from '../crises/crisis';
 import {CrisesService} from '../crises/crises.service';
 
 @Injectable()
@@ -34,8 +34,12 @@ export class HeroesService {
     return this._supersService.deleteSuper('heroes', id);
   }
 
-  getUninvolvedCrises(id: string) {
+  getUninvolvedCrises(id: string): Rx.Observable<Crisis[]> {
     return this._crisesService.getUninvolvedCrises('heroes', id);
+  }
+
+  involveInCrisis(heroId: string, crisisId: string): Rx.Observable<Crisis> {
+    return this._crisesService.involveInCrisis('heroes', heroId, crisisId);
   }
 
   private _handleError(error: Response) {

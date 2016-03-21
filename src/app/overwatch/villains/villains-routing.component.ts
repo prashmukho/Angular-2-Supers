@@ -2,17 +2,15 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 import {VillainsListComponent} from './villains-list.component';
-import {EditVillainComponent} from './edit-villain.component';
 import {NewVillainComponent} from './new-villain.component';
-import {VillainsService} from './villains.service';
+import {EditVillainComponent} from './edit-villain.component';
 import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
   template: `
     <router-outlet></router-outlet>
   `,
-  directives: [ROUTER_DIRECTIVES],
-  providers: [VillainsService]
+  directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
   {

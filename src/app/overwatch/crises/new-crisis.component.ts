@@ -24,7 +24,7 @@ export class NewCrisisComponent {
     private _crisesService: CrisesService,
     private _dialogService: DialogService
   ) {
-    this.villainId = this._routeParams.get('villainId');
+    this.villainId = this._routeParams.get('id');
     this.crisis.begin = this._dateString(new Date());
   }
 

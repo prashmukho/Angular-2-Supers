@@ -21,7 +21,7 @@ import {ActiveLinkService} from '../../active-link.service';
     useAsDefault: true
   },
   {
-    path: '/villains/:villainId/crises/new',
+    path: '/villains/:id/crises/new',
     name: 'NewCrisis',
     component: NewCrisisComponent
   },
