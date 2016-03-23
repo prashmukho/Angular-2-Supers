@@ -5,6 +5,7 @@ import {Router, CanDeactivate, ComponentInstruction} from 'angular2/router';
 import {Villain} from './villain';
 import {VillainsService} from './villains.service';
 import {DialogService} from '../../dialog.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require('../templates/super-detail.html')
@@ -19,9 +20,10 @@ export class NewVillainComponent implements CanDeactivate {
   action: string = 'Add Villain';
 
   constructor(
-    private _router: Router,
     private _villainsService: VillainsService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _utils: UtilsService,
+    private _router: Router
   ) {}
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
@@ -31,7 +33,7 @@ export class NewVillainComponent implements CanDeactivate {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('VillainsList', {});
+    this._utils.goTo(this._router, ['VillainsList']);
   }
 
   save(): void {
@@ -40,13 +42,9 @@ export class NewVillainComponent implements CanDeactivate {
         (villain: Villain) => {
           console.log('saved', villain);
           this.edited = false;
-          this._goTo('VillainsList', { id: villain['_id'] });
+          this._utils.goTo(this._router, ['VillainsList', { id: villain['_id'] }]);
         },
         error => console.error(error)
       );
-  }
-
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
   }
 }

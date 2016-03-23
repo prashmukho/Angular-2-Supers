@@ -2,7 +2,8 @@
   <h3>{{ title }}</h3>
   <ul class="list-group">
     <li class="list-group-item"
-      *ngFor="#crisis of crises">
+      *ngFor="#crisis of crises"
+      [class.selected]="isSelected(crisis['_id'])">
       <div class='row'>
         <div class='col-xs-4'>
           <span class="name">

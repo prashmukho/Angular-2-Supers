@@ -6,6 +6,7 @@ import {OverwatchRoutingComponent} from './overwatch/overwatch-routing.component
 import {LoginComponent} from './users/login.component';
 import {DialogService} from './dialog.service';
 import {ActiveLinkService} from './active-link.service';
+import {UtilsService} from './utils.service';
 
 interface Provider {
   wasLoggedIn: boolean;
@@ -42,6 +43,7 @@ const LOGIN_CONFIG: LoginConfig = {
     HTTP_PROVIDERS, 
     DialogService,
     ActiveLinkService,
+    UtilsService,
     provide('login.config', {useValue: LOGIN_CONFIG})
   ]
 })

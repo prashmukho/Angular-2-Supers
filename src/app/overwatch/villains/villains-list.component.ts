@@ -2,9 +2,10 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 
 import {Villain} from './villain';
-import {VillainsService} from './villains.service';
-import {InvolvementComponent} from '../involvement.component';
 import {Crisis} from '../crises/crisis';
+import {InvolvementComponent} from '../involvement.component';
+import {VillainsService} from './villains.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require('../templates/supers-list.html'),
@@ -18,6 +19,7 @@ export class VillainsListComponent implements OnInit {
 
   constructor(
     private _villainsService: VillainsService,
+    private _utils: UtilsService,
     private _routeParams: RouteParams,
     private _router: Router
   ) {}
@@ -25,7 +27,7 @@ export class VillainsListComponent implements OnInit {
   ngOnInit() {
     this._villainsService.getVillains()
       .subscribe(
-        list => {
+        (list: Villain[]) => {
           this.list = list;
 
           let id = this._routeParams.get('id');
@@ -40,18 +42,18 @@ export class VillainsListComponent implements OnInit {
   }
   
   edit(id: string) {
-    this._goTo(this._router, ['EditVillain', { id: id }]);
+    this._utils.goTo(this._router, ['EditVillain', { id: id }]);
   }
 
   add() {
-    this._goTo(this._router, ['NewVillain']);
+    this._utils.goTo(this._router, ['NewVillain']);
   }
 
   delete(id: string) {
     this._villainsService.deleteVillain(id)
       .subscribe(
         (villain: Villain) => {
-          let index = this.list.indexOf(villain);
+          let index = this._utils.getDeletedListIndex(villain['_id'], this.list);
           this.list.splice(index, 1);
           console.log('deleted', villain);
         },
@@ -60,7 +62,7 @@ export class VillainsListComponent implements OnInit {
   }
 
   instigate(id: string) {
-    this._goTo(this._router.parent, [
+    this._utils.goTo(this._router.parent, [
       'CrisesCenter', 'NewCrisis', { id: id }
     ]);
   }
@@ -68,14 +70,10 @@ export class VillainsListComponent implements OnInit {
   involve($event)  {
     this._villainsService.involveInCrisis($event.superId, $event.crisisId)
       .subscribe(
-        (crisis: Crisis) => this._goTo(this._router.parent, [
+        (crisis: Crisis) => this._utils.goTo(this._router.parent, [
           'CrisesCenter', 'EditCrisis', { id: crisis['_id'] }
         ]),
         error => console.error(error)
       );
-  }
-
-  private _goTo(router, routeArray) {
-    router.navigate(routeArray);
   }
 }

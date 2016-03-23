@@ -5,6 +5,7 @@ import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2
 import {Villain} from './villain';
 import {VillainsService} from './villains.service';
 import {DialogService} from '../../dialog.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require('../templates/super-detail.html')
@@ -16,23 +17,19 @@ export class EditVillainComponent implements OnInit, CanDeactivate {
 
   constructor(
     private _villainsService: VillainsService,
+    private _dialogService: DialogService,
+    private _utils: UtilsService,
     private _routeParams: RouteParams,
-    private _router: Router,
-    private _dialogService: DialogService
+    private _router: Router
   ) {}
 
   ngOnInit() {
-    // let villain = this._routeParams.get('villain');
-    // if (villain) {
-    //   return this.model = JSON.parse(decodeURIComponent(villain));
-    // }
-
     let id = this._routeParams.get('id');
     this._villainsService.getVillain(id)
       .subscribe(
         (villain: Villain) => {
           if (!villain) {
-            this._goTo('VillainsList', {});
+            this._utils.goTo(this._router, ['VillainsList']);
             return false;
           }
           this.model = villain;
@@ -48,7 +45,7 @@ export class EditVillainComponent implements OnInit, CanDeactivate {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('VillainsList', { id: this.model['_id'] });
+    this._utils.goTo(this._router, ['VillainsList', { id: this.model['_id'] }]);
   }
       
   save() {
@@ -57,13 +54,9 @@ export class EditVillainComponent implements OnInit, CanDeactivate {
       .subscribe(
         (villain: Villain) => {
           console.log('updated', villain);
-          this._goTo('VillainsList', { id: villain['_id'] });
+          this._utils.goTo(this._router, ['VillainsList', { id: villain['_id'] }]);
         },
         error => console.error(error)
       );
-  }
-
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
   }
 }

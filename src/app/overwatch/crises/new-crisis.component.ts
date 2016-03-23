@@ -5,6 +5,7 @@ import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2
 import {Crisis} from './crisis';
 import {CrisesService} from './crises.service';
 import {DialogService} from '../../dialog.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require('./templates/crisis-detail.html')
@@ -19,13 +20,14 @@ export class NewCrisisComponent {
   villainId: string;
 
   constructor(
-    private _router: Router,
-    private _routeParams: RouteParams,
     private _crisesService: CrisesService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _utils: UtilsService,
+    private _routeParams: RouteParams,
+    private _router: Router
   ) {
     this.villainId = this._routeParams.get('id');
-    this.crisis.begin = this._dateString(new Date());
+    this.crisis.begin = this._utils.dateString(new Date());
   }
 
   routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
@@ -35,7 +37,7 @@ export class NewCrisisComponent {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('CrisesList', {});
+    this._utils.goTo(this._router, ['CrisesList']);
   }
 
   save(): void {
@@ -44,27 +46,13 @@ export class NewCrisisComponent {
         (crisis: Crisis) => {
           console.log('saved', crisis);
           this.edited = false;
-          this._goTo('CrisesList', {});
-        },
+          this._utils.goTo(this._router, ['CrisesList', { id: crisis['_id'] }]);
+      },
         error => console.error(error)
       );
   }
 
   hasCommenced() { 
     return false; 
-  }
-
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
-  }
-
-  private _dateString(date: Date) {
-    let MM = String(date.getMonth() + 1);
-    MM = MM.length === 1 ? '0' + MM : MM;
-
-    let dd = String(date.getDate());
-    dd = dd.length === 1 ? '0' + dd : dd;
-
-    return `${date.getFullYear()}-${MM}-${dd}`;
   }
 }

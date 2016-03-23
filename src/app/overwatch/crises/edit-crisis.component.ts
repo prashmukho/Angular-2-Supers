@@ -5,6 +5,7 @@ import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2
 import {Crisis} from './crisis';
 import {CrisesService} from './crises.service';
 import {DialogService} from '../../dialog.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require('./templates/crisis-detail.html')
@@ -15,10 +16,11 @@ export class EditCrisisComponent implements OnInit {
   action: string = 'Edit Crisis';
 
   constructor(
-    private _router: Router,
-    private _routeParams: RouteParams,
     private _crisesService: CrisesService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _utils: UtilsService,
+    private _routeParams: RouteParams,
+    private _router: Router
   ) {}
 
   ngOnInit() {
@@ -27,7 +29,7 @@ export class EditCrisisComponent implements OnInit {
       .subscribe(
         (crisis: Crisis) => {
           if (!crisis) {
-            this._goTo('CrisesList', {});
+            this._utils.goTo(this._router, ['CrisesList']);
             return false;
           }
           this.crisis = crisis;
@@ -44,7 +46,7 @@ export class EditCrisisComponent implements OnInit {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('CrisesList', { id: this.crisis['_id'] });
+    this._utils.goTo(this._router, ['CrisesList', { id: this.crisis['_id'] }]);
   }
 
   save(): void {
@@ -53,7 +55,7 @@ export class EditCrisisComponent implements OnInit {
         (crisis: Crisis) => {
           console.log('saved', crisis);
           this.edited = false;
-          this._goTo('CrisesList', { _id: crisis['_id'] });
+          this._utils.goTo(this._router, ['CrisesList', { id: crisis['_id'] }]);
         },
         error => console.error(error)
       );
@@ -61,19 +63,5 @@ export class EditCrisisComponent implements OnInit {
 
   hasCommenced() {
     return true;
-  }
-
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
-  }
-
-  private _dateString(date: Date) {
-    let MM = String(date.getMonth() + 1);
-    MM = MM.length === 1 ? '0' + MM : MM;
-
-    let dd = String(date.getDate());
-    dd = dd.length === 1 ? '0' + dd : dd;
-
-    return `${date.getFullYear()}-${MM}-${dd}`;
   }
 }

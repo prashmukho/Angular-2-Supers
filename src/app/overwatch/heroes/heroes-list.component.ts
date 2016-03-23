@@ -2,9 +2,10 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 
 import {Hero} from './hero';
-import {HeroesService} from './heroes.service';
-import {InvolvementComponent} from '../involvement.component';
 import {Crisis} from '../crises/crisis';
+import {InvolvementComponent} from '../involvement.component';
+import {HeroesService} from './heroes.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require( '../templates/supers-list.html'),
@@ -15,11 +16,10 @@ export class HeroesListComponent implements OnInit {
   list: Hero[];
   selectedId: string;
   category = 'hero';
-  uninvolvedCrises: Crisis[] = [];
-  uninvolvedText: string = 'Loading...';
 
   constructor(
     private _heroesService: HeroesService,
+    private _utils: UtilsService,
     private _routeParams: RouteParams,
     private _router: Router
   ) {}
@@ -42,18 +42,18 @@ export class HeroesListComponent implements OnInit {
   }
   
   edit(id: string) {
-    this._goTo(this._router, ['EditHero', { id: id }]);
+    this._utils.goTo(this._router, ['EditHero', { id: id }]);
   }
 
   add() {
-    this._goTo(this._router, ['NewHero']);
+    this._utils.goTo(this._router, ['NewHero']);
   }
 
   delete(id: string) {
     this._heroesService.deleteHero(id)
       .subscribe(
         (hero: Hero) => {
-          let index = this.list.indexOf(hero);
+          let index = this._utils.getDeletedListIndex(hero['_id'], this.list);
           this.list.splice(index, 1);
           console.log('deleted', hero);
         },
@@ -64,14 +64,10 @@ export class HeroesListComponent implements OnInit {
   involve($event) {
     this._heroesService.involveInCrisis($event.superId, $event.crisisId)
       .subscribe(
-        (crisis: Crisis) => this._goTo(this._router.parent, [
+        (crisis: Crisis) => this._utils.goTo(this._router.parent, [
           'CrisesCenter', 'EditCrisis', { id: crisis['_id'] }
         ]),
         error => console.error(error)
       );
-  }
-
-  private _goTo(router, routeArray) {
-    router.navigate(routeArray);
   }
 }

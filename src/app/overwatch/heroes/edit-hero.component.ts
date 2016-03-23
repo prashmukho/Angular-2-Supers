@@ -5,6 +5,7 @@ import {RouteParams, Router, CanDeactivate, ComponentInstruction} from 'angular2
 import {Hero} from './hero';
 import {HeroesService} from './heroes.service';
 import {DialogService} from '../../dialog.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   template: require('../templates/super-detail.html')
@@ -16,9 +17,10 @@ export class EditHeroComponent {
 
   constructor(
     private _heroesService: HeroesService,
+    private _dialogService: DialogService,
+    private _utils: UtilsService,
     private _routeParams: RouteParams,
-    private _router: Router,
-    private _dialogService: DialogService
+    private _router: Router
   ) {}
 
   ngOnInit() {
@@ -27,7 +29,7 @@ export class EditHeroComponent {
       .subscribe(
         (hero: Hero) => {
           if (!hero) {
-            this._goTo('HeroesList', {});
+            this._utils.goTo(this._router, ['HeroesList']);
             return false;
           }
           this.model = hero;
@@ -43,7 +45,7 @@ export class EditHeroComponent {
 
   cancel(edited: boolean) {
     this.edited = edited;
-    this._goTo('HeroesList', { id: this.model['_id'] });
+    this._utils.goTo(this._router, ['HeroesList', { id: this.model['_id'] }]);
   }
       
   save() {
@@ -52,13 +54,9 @@ export class EditHeroComponent {
       .subscribe(
         (hero: Hero) => {
           console.log('updated', hero);
-          this._goTo('HeroesList', { id: hero['_id'] });
+          this._utils.goTo(this._router, ['HeroesList', { id: hero['_id'] }]);
         },
         error => console.error(error)
       );
-  }
-
-  private _goTo(routeName, params) {
-    this._router.navigate([routeName, params]);
   }
 }
