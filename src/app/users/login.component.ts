@@ -56,9 +56,9 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this._activeLink.switchLink('SignIn');
     // load Facebook SDK
-    require('./fb.js')(this.config);
+    require('./fb.js')(this.config, 'login');
     // load Google SDK
-    require('./google.js')(this.config);
+    require('./google.js')(this.config, 'login');
   }
 
   signIn(btn) {
@@ -69,8 +69,9 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           this.config.postLogin(
-            this.config.active = true, 
-            this.config.email = data.account.email
+            this.config.active = true,
+            this.config.email = data.account.email,
+            this.config.provider = { name: 'self', wasLoggedIn: false }
           );
           this._router.parent.navigate(['Overwatch']);
         },
@@ -107,11 +108,11 @@ export class LoginComponent implements OnInit {
 
   socialSignIn() {
     this.config.postLogin(
-      this.config.active,
-      this.config.email
+      this.config.active, 
+      this.config.email,
+      this.config.provider
     );
-    // switch route after login dialog closes
-    setTimeout(() => this._router.parent.navigate(['Overwatch']), 200)
+    this._router.parent.navigate(['Overwatch']);
   }
 
   private _errors(): boolean {

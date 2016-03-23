@@ -48,8 +48,14 @@
               <a href="#">Profile</a>
             </li>
             <li role="separator" class="divider"></li>
-            <li>
-              <a [routerLink]="['SignIn']">Sign Out</a>
+            <li id='logout' [hidden]="config.provider.name !== 'self'" (click)="signOut()">
+              <a>Sign Out</a>
+            </li>
+            <li id='fb-logout' *ngIf="config.provider.name === 'facebook'">
+              <a>Sign Out</a>
+            </li>
+            <li id='google-logout' *ngIf="config.provider.name === 'google'">
+              <a>Sign Out</a>
             </li>
           </ul>
         </li>

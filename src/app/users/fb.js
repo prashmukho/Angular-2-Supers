@@ -1,4 +1,4 @@
-module.exports = function (loginConfig) {
+module.exports = function (loginConfig, action) {
   window.fbAsyncInit = function() {
     FB.init({
       appId      : process.env.FB_APP_ID,
@@ -7,33 +7,44 @@ module.exports = function (loginConfig) {
       cookie     : true,
       version    : 'v2.5'
     });
+    
+    FB.getLoginStatus(function (response) {
+      if (action === 'login') 
+        loginConfig.provider.wasLoggedIn = ( response.status === 'unknown' ? false : true );
+      
+      $(document).on('click', '#facebook-login', function () {
+        $('#facebook-login')[0].disabled = true;
 
-    $(document).on('click', '#facebook-login', function () {
-      var loginBtn = $('#facebook-login')[0];
-      loginBtn.disabled = true;
+        FB.login(function(response) {
+          if (response.authResponse) {
+            // Get basic user info
+            FB.api('/me?fields=name,email', function(response) {
+              loginConfig.active = true;
+              loginConfig.email = response.email;
+              loginConfig.provider.name = 'facebook';
+              
+              console.log('Successful login for:', loginConfig.email);
+              $('#post-login').click();
+            });
+          } else {
+            console.error('User aborted');
+            $('#facebook-login')[0].disabled = false;
+          }
+        }, {scope: 'public_profile,email'});
+      });
+    });
 
-      FB.login(function(response) {
-        console.log(response.status);
-        
-        if (response.authResponse) {
-          // Get basic user info
-          FB.api('/me?fields=name,email', function(response) {
-
-            loginConfig.active = true;
-            loginConfig.email = response.email;
-            loginConfig.provider = 'facebook';
-            
-            console.log('Successful login for:', response.email);
-            loginBtn.disabled = false;
-
-            $('.post-login').click();
-          });
-        } else {
-          console.error('User aborted.');
-          loginBtn.disabled = false;
-        }
-
-      }, {scope: 'public_profile,email'});
+    $(document).on('click', '#fb-logout', function () {
+      if (loginConfig.provider.wasLoggedIn === false) {
+        FB.getLoginStatus(function(response) {
+          if (response && response.status === 'connected') {
+            FB.logout(function(response) {
+              console.log('User signed out of Facebook.');
+            });
+          }
+        });
+      }
+      $('#logout').click();
     });
   };
 
