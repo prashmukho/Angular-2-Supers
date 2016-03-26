@@ -12,9 +12,9 @@ import {UtilsService} from '../../utils.service';
 })
 export class NewVillainComponent implements CanDeactivate {
   model = { 
-    name:'', 
+    name: '', 
     power: { name: '', strength: 3 }, 
-    alias:'' 
+    alias: '' 
   };
   edited: boolean = false;
   action: string = 'Add Villain';

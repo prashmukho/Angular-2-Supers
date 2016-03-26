@@ -25,7 +25,7 @@ const LOGIN_CONFIG: LoginConfig = {
   active: false,
   email: null,
   provider: { wasLoggedIn: false, name: null },
-  postLogin: (active, email, provider) => {
+  postLogin: (active: boolean, email: string, provider: Provider) => {
     window.localStorage.setItem('user', JSON.stringify({
       active: active,
       email: email,

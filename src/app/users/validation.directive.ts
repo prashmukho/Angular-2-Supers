@@ -10,9 +10,7 @@ export interface Validator {
 
 @Directive({
   selector: '[validate]',
-  host: {
-    '(input)': 'onInput()'
-  }
+  host: { '(input)': 'onInput()' }
 })
 export class ValidationDirective {
   @Input('validate') validator: Validator;

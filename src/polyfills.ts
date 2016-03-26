@@ -11,7 +11,6 @@ if ('production' === process.env.ENV) {
   // In production manually include the operators you use
   require('rxjs/add/operator/map');
   require('rxjs/add/operator/mergeMap');
-
 } else {
   // Reflect Polyfill
   require('es7-reflect-metadata/src/global/browser');
@@ -25,7 +24,6 @@ if ('production' === process.env.ENV) {
   // In development include every operator
   require('rxjs/add/operator/map');
   require('rxjs/add/operator/mergeMap');
-
 }
 
 // For vendors for example jQuery, Lodash, angular2-jwt just import them anywhere in your app
