@@ -8,7 +8,7 @@ var pluralize = require('pluralize');
 
 // :collection refers to a category-based collection for making 
 // REST-like requests to a single real collection of supers
-// eg. /heroes/... for handling { category: heroes } and so on
+// eg. /heroes/... for handling { category: 'heroes' } and so on.
 
 // #index
 router.get('/:collection', function(req, res) {
@@ -24,8 +24,10 @@ router.get('/:collection', function(req, res) {
 
 // #create
 router.post('/:collection', function(req, res) {
-  var model = new Super(req.body.model);
-  model.category = pluralize(req.params.collection, 1);
+  var model = new Super(req.body.model), 
+      collection = req.params.collection;
+  //TODO: validate 'category' field is 'hero' or 'villain'
+  model.category = pluralize(collection, 1);
   model.save(function (err) {
     if (err) console.log(err);
     res.send({ data: model.publicSuper() });
@@ -65,35 +67,33 @@ router.delete('/:collection/:id', function(req, res) {
     .findById(id, function (err, model) {
       if (err) console.log(err);
       
-      var q;
+      var supersSet;
       if (model.category === 'villain') {
-        q = Crisis.update({
-          _id: { $in: model.crises } 
-        }, {
-          $pull: { villains: model._id }
-        }, { 
-          multi: true 
-        });
+        supersSet = { villains: model._id }
       } else if (model.category === 'hero') {
-        q = Crisis.update({
-          _id: { $in: model.crises } 
-        }, {
-          $pull: { heroes: model._id }
-        }, { 
-          multi: true 
-        });
+        supersSet = { heroes: model._id }
       }
-      q.exec(function (err) {
+
+      model.remove(function (err) {
         if (err) console.log(err);
 
-        model.remove(function (err) {
+        Crisis.update({
+          _id: { $in: model.crises } 
+        }, {
+          $pull: supersSet
+        }, { 
+          multi: true 
+        }, function (err) {
           if (err) console.log(err);
 
           if (model.category === 'villain') {
             Crisis.update({ 
+              _id: { $in: model.crises }, 
               villains: { $size: 0 } 
             }, {
               $currentDate: { end: true }
+            }, {
+              multi: true
             }, function (err) {
               if (err) console.log(err);
             });
