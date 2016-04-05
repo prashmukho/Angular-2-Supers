@@ -46,12 +46,11 @@ export class OverwatchRoutingComponent implements OnInit {
   constructor(
     private _router: Router,
     @Inject('login.config') public config: LoginConfig
-  ) {
-    require('../users/fb.js')(this.config);
-    require('../users/google.js')(this.config);
-  }
+  ) {}
 
   ngOnInit() {
     if (!this.config.active) this._router.parent.navigate(['SignIn']);
+    require('../users/fb.js')(this.config);
+    require('../users/google.js')(this.config);
   }
 }

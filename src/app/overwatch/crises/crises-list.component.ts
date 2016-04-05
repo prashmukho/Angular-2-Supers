@@ -21,13 +21,15 @@ export class CrisesListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    let id = this._routeParams.get('id');
+    if (id) this.selectedId = id;
     this._crisesService.getCrises()
       .subscribe(
         (crises: Crisis[]) => {
           this.crises = crises;
-          
-          let id = this._routeParams.get('id');
-          if (id) this.selectedId = id;
+          // default: lng,lat - 28.561450999999998, 77.1662735 (vasant vihar, new delhi, INDIA)
+          // default: zoom - 5
+          require('./geolocation.js')(28.561450999999998, 77.1662735, crises, 4);
         },
         error => console.error(error)
       );
@@ -48,6 +50,10 @@ export class CrisesListComponent implements OnInit {
           let index = this._utils.getDeletedListIndex(crisis['_id'], this.crises);
           this.crises.splice(index, 1);
           console.log('deleted', crisis);
+          window.postMessage({ 
+            type: 'deletecrisis', 
+            crisisId: crisis['_id'] 
+          }, window.location.href);
         },
         error => console.error(error)
       );

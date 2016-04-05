@@ -11,7 +11,8 @@ var metadata = {
   ENV: ENV,
   KEYS: {
     'FB_APP_ID': config.KEYS.FB_APP_ID,
-    'GOOGLE_CLIENT_ID': config.KEYS.GOOGLE_CLIENT_ID
+    'GOOGLE_CLIENT_ID': config.KEYS.GOOGLE_CLIENT_ID,
+    'GOOGLE_MAPS_API_KEY': config.KEYS.GOOGLE_MAPS_API_KEY
   }
 };
 // for inline autorefresh of page with NodeJS API
@@ -31,7 +32,7 @@ module.exports = {
 
   // angular app bundles
   entry: { 
-    'polyfills': devServerEntry.concat(['./src/polyfills.ts']),
+    'polyfills': ['./src/polyfills.ts'],
     'main': devServerEntry.concat(['bootstrap-loader', './src/main.ts'])
   },
 
@@ -114,7 +115,8 @@ module.exports = {
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV),
         'FB_APP_ID': JSON.stringify(metadata.KEYS.FB_APP_ID),
-        'GOOGLE_CLIENT_ID': JSON.stringify(metadata.KEYS.GOOGLE_CLIENT_ID)
+        'GOOGLE_CLIENT_ID': JSON.stringify(metadata.KEYS.GOOGLE_CLIENT_ID),
+        'GOOGLE_MAPS_API_KEY': JSON.stringify(metadata.KEYS.GOOGLE_MAPS_API_KEY)
       }
     }),
 

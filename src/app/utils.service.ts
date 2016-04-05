@@ -18,4 +18,11 @@ export class UtilsService {
 
     return `${date.getFullYear()}-${MM}-${dd}`;
   }
+
+  waitForTemplate(selector, callback) {
+    let template = document.querySelector(selector);
+    if (!template)
+      return setTimeout(() => this.waitForTemplate(selector, callback), 200);
+    callback();
+  }
 }

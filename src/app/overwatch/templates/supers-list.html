@@ -1,9 +1,9 @@
+<h3>{{ title }}</h3>
+<button type="button" class="btn btn-primary" style="margin-bottom:10px"
+  (click)="add()">
+  Add
+</button>
 <div class="supers-list">
-  <h3>{{ title }}</h3>
-  <button type="button" class="btn btn-primary" style="margin-bottom:10px"
-    (click)="add()">
-    Add
-  </button>
   <ul class="list-group">
     <li class="list-group-item"
       *ngFor="#model of list"

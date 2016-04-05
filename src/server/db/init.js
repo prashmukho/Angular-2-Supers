@@ -19,19 +19,44 @@ superSchema.methods.publicSuper = function () {
 };
 
 var crisisSchema = new Schema({
-  title : { type: String, required: true, trim: true },
-  begin: { type: Date, default: Date.now },
+  title : { 
+    type: String, 
+    required: [true, 'Title is required'], 
+    trim: true 
+  },
+  //TODO: use timestamps which add 'createdAt' and 'updatedAt' fields
+  begin: { 
+    type: Date, 
+    default: Date.now 
+  },
   end: Date,
   villains : [{ type: Schema.Types.ObjectId, ref: 'Super' }],
-  heroes: [{ type: Schema.Types.ObjectId, ref: 'Super' }]
+  heroes: [{ type: Schema.Types.ObjectId, ref: 'Super' }],
+  // Point geoJSON object
+  epicenter: { 
+    type: [Number], 
+    index: '2dsphere',
+    // default: [77.1662735, 28.561450999999998],
+    validate: {
+      validator: isPoint,
+      message: '[{VALUE}] is not a valid point coordinate!'
+    }
+  }
 });
+
+function isPoint(coords) {
+  return toString.call(coords).match(/\s(\w+)\]$/)[1] === 'Array' &&
+         coords.every(function (n) { return typeof n === 'number' }) &&
+         coords.length === 2;
+}
 
 crisisSchema.methods.publicCrisis = function () {
   return {
     _id: this._id,
     title: this.title,
     begin: this.begin,
-    end: this.end
+    end: this.end,
+    epicenter: this.epicenter
   };
 };
 

@@ -6,12 +6,16 @@ import {NewCrisisComponent} from './new-crisis.component';
 import {EditCrisisComponent} from './edit-crisis.component';
 import {CrisesService} from './crises.service';
 import {ActiveLinkService} from '../../active-link.service';
+import {GeolocationService} from './geolocation.service';
+
+import './map.scss';
 
 @Component({
   template: `
     <router-outlet></router-outlet>
   `,
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES],
+  providers: [GeolocationService]
 })
 @RouteConfig([
   {
