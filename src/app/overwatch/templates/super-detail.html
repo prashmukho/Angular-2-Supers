@@ -3,7 +3,8 @@
   <form role="form" #detailForm="ngForm">
     <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" class="form-control" required
+      <input type="text" class="form-control" 
+        placeholder="enter name" required
         [(ngModel)]="model.name" 
         ngControl="name"  #name="ngForm" />
       <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
@@ -12,13 +13,16 @@
     </div>
     <div class="form-group">
       <label for="alterEgo">Alter Ego</label>
-      <input type="text" class="form-control"
-        [(ngModel)]="model.alias" />
+      <input type="text" class="form-control" 
+        placeholder="enter alias"
+        [(ngModel)]="model.alias" 
+        ngControl="alias"  #alias="ngForm" />
     </div>
     <div class='row'>
       <div class="form-group col-xs-8">
         <label for="power">Nefarious Power</label>
-        <input type="text" class="form-control" required
+        <input type="text" class="form-control" 
+          placeholder="enter power" required
           [(ngModel)]="model.power.name"
           ngControl="powerName"  #powerName="ngForm" />
         <div [hidden]="powerName.valid || powerName.pristine" class="alert alert-danger">
@@ -28,7 +32,8 @@
       <div class="form-group col-xs-4">
         <label for="strength">Strength</label>
         <input type="number" class="form-control" 
-          [(ngModel)]="model.power.strength" />
+          [(ngModel)]="model.power.strength" 
+          ngControl="strength"  #strength="ngForm" />
       </div>
     </div>
   </form>

@@ -3,9 +3,10 @@ import {RouteParams, Router} from 'angular2/router';
 
 import {Villain} from './villain';
 import {Crisis} from '../crises/crisis';
-import {InvolvementComponent} from '../involvement.component';
+import {InvolvementComponent, InvolvementEvent} from '../involvement.component';
 import {VillainsService} from './villains.service';
 import {UtilsService} from '../../utils.service';
+import {SupersHelperService} from '../supers-helper.service';
 
 @Component({
   template: require('../templates/supers-list.html'),
@@ -21,20 +22,12 @@ export class VillainsListComponent implements OnInit {
     private _villainsService: VillainsService,
     private _utils: UtilsService,
     private _routeParams: RouteParams,
-    private _router: Router
+    private _router: Router,
+    private _handle: SupersHelperService<Villain>
   ) {}
 
   ngOnInit() {
-    this._villainsService.getVillains()
-      .subscribe(
-        (list: Villain[]) => {
-          this.list = list;
-
-          let id = this._routeParams.get('id');
-          if (id) this.selectedId = id;
-        },
-        error => console.error(error)
-      );
+    this._handle.onSuperListInit(this, 'villain');
   }
 
   isSelected(id: string): boolean { 
@@ -50,30 +43,16 @@ export class VillainsListComponent implements OnInit {
   }
 
   delete(id: string) {
-    this._villainsService.deleteVillain(id)
-      .subscribe(
-        (villain: Villain) => {
-          let index = this._utils.getDeletedListIndex(villain['_id'], this.list);
-          this.list.splice(index, 1);
-          console.log('deleted', villain);
-        },
-        error => console.error(error)
-      );
+    this._handle.onSuperListDelete(this, 'villain', id);
+  }
+
+  involve($event: InvolvementEvent) {
+    this._handle.onSuperListInvolve(this, 'villain', $event.superId, $event.crisisId);
   }
 
   instigate(id: string) {
     this._utils.goTo(this._router.parent, [
-      'CrisesCenter', 'NewCrisis', { id: id }
+      'CrisesCenter', 'NewCrisis', { villainId: id }
     ]);
-  }
-
-  involve($event)  {
-    this._villainsService.involveInCrisis($event.superId, $event.crisisId)
-      .subscribe(
-        (crisis: Crisis) => this._utils.goTo(this._router.parent, [
-          'CrisesCenter', 'EditCrisis', { id: crisis['_id'] }
-        ]),
-        error => console.error(error)
-      );
   }
 }

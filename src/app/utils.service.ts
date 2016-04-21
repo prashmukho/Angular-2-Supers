@@ -6,7 +6,7 @@ export class UtilsService {
   }
 
   getDeletedListIndex(id: string, list: any[]) {
-    return list.map((villain) => villain['_id']).indexOf(id);
+    return list.map(model => model['_id']).indexOf(id);
   }
 
   dateString(date: Date) {
@@ -17,12 +17,5 @@ export class UtilsService {
     dd = dd.length === 1 ? '0' + dd : dd;
 
     return `${date.getFullYear()}-${MM}-${dd}`;
-  }
-
-  waitForTemplate(selector, callback) {
-    let template = document.querySelector(selector);
-    if (!template)
-      return setTimeout(() => this.waitForTemplate(selector, callback), 200);
-    callback();
   }
 }

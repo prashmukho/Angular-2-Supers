@@ -3,15 +3,13 @@ import {Response} from 'angular2/http';
 import * as Rx from "rxjs/Rx"
 
 import {Hero} from './hero';
-import {SupersService} from '../supers.service';
 import {Crisis} from '../crises/crisis';
-import {CrisesService} from '../crises/crises.service';
+import {SupersService} from '../supers.service';
 
 @Injectable()
 export class HeroesService {
   constructor (
-    private _supersService: SupersService<Hero>,
-    private _crisesService: CrisesService
+    private _supersService: SupersService<Hero>
   ) {}
 
   getHero(id: string): Rx.Observable<Hero> {
@@ -35,11 +33,11 @@ export class HeroesService {
   }
 
   getUninvolvedCrises(id: string): Rx.Observable<Crisis[]> {
-    return this._crisesService.getUninvolvedCrises('heroes', id);
+    return this._supersService.getUninvolvedCrises('heroes', id);
   }
 
   involveInCrisis(heroId: string, crisisId: string): Rx.Observable<Crisis> {
-    return this._crisesService.involveInCrisis('heroes', heroId, crisisId);
+    return this._supersService.involveInCrisis('heroes', heroId, crisisId);
   }
 
   private _handleError(error: Response) {

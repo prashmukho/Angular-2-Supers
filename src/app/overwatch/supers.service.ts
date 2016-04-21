@@ -4,10 +4,15 @@ import * as Rx from "rxjs/Rx";
 import {Headers, RequestOptions} from 'angular2/http';
 
 import {Super} from './super';
+import {Crisis} from './crises/crisis';
+import {CrisesService} from './crises/crises.service';
 
 @Injectable()
 export class SupersService<I> {
-  constructor(private _http: Http) {}
+  constructor(
+    private _http: Http,
+    private _crisesService: CrisesService
+  ) {}
 
   getSuper(collection: string, id: string): Rx.Observable<I> {
     return this._http.get(`api/v1/${collection}/${id}`)
@@ -48,6 +53,14 @@ export class SupersService<I> {
     return this._http.delete(`api/v1/${collection}/${id}`, options)
       .map(res => res.json().data)
       .catch(this._handleError);
+  }
+
+  getUninvolvedCrises(collection: string, id: string): Rx.Observable<Crisis[]> {
+    return this._crisesService.getUninvolvedCrises(collection, id);
+  }
+
+  involveInCrisis(collection: string, id: string, crisisId: string): Rx.Observable<Crisis> {
+    return this._crisesService.involveInCrisis(collection, id, crisisId);
   }
 
   private _handleError(error: Response) {

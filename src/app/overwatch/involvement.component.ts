@@ -4,8 +4,8 @@ import {VillainsService} from './villains/villains.service';
 import {HeroesService} from './heroes/heroes.service';
 import {Crisis} from './crises/crisis';
 
-interface EngageEvent {
-  heroId: string;
+export interface InvolvementEvent {
+  superId: string;
   crisisId: string;
 }
 
@@ -16,7 +16,7 @@ interface EngageEvent {
 export class InvolvementComponent {
   @Input() model: any;
   @Input() category: string;
-  @Output() involveRequest: EventEmitter<any> = new EventEmitter();
+  @Output() involveRequest: EventEmitter<InvolvementEvent> = new EventEmitter();
 
   uninvolvedCrises: Crisis[] = [];
   uninvolvedText = 'Loading...';

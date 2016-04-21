@@ -8,8 +8,16 @@ module.exports = function(lat, lng, crises, zoom) {
     var index = myMapMarkers.map(function (markerWrapper) { 
       return markerWrapper.crisisId; 
     }).indexOf(crisisId);
-    myMapMarkers[index].marker.setMap(null);
-    myMapMarkers.splice(index, 1);
+
+    if (index === -1) {
+      index = crises.map(function (crisis) { 
+        return crisis['_id']; 
+      }).indexOf(crisisId);
+      crises.splice(index, 1);
+    } else {
+      myMapMarkers[index].marker.setMap(null);
+      myMapMarkers.splice(index, 1);
+    }
   }
 
   window.onCrisisDelete = function (e) {
@@ -17,16 +25,16 @@ module.exports = function(lat, lng, crises, zoom) {
   };
   window.addEventListener("message", onCrisisDelete, false);
 
-  function initMap() {
+  function initMap() { 
     var map = new google.maps.Map(document.getElementById('map'), {
       center: new google.maps.LatLng(lat,lng),
       zoom: (zoom || 8)
     });
 
     function setMapOnAll(map) {
-      var markers = myMapMarkers.map(function (markerWrapper) { return markerWrapper.marker; });
-      for (var i = 0; i < markers.length; i++)
-        markers[i].setMap(map);
+      myMapMarkers.forEach(function (markerWrapper) { 
+        markerWrapper.marker.setMap(map); 
+      });
     }
 
     function showMarkers() {
@@ -42,27 +50,37 @@ module.exports = function(lat, lng, crises, zoom) {
       myMapMarkers = [];
     }
 
-    function attachInfoWindows() {
-      myMapMarkers.forEach(function (markerWrapper, index) {
-        var infowindow = new google.maps.InfoWindow({
-          content: '<h3>'+markerWrapper.marker.getTitle()+'</h3>'
-        });
-        markerWrapper.marker.addListener('click', function() {
-          infowindow.open(map, markerWrapper.marker);
-        });
+    function attachInfoWindow(markerWrapper) {
+      var infowindow = new google.maps.InfoWindow({
+        content: '<h4>'+markerWrapper.marker.getTitle()+'</h4>'+
+                 '<p>Location:</p>'+
+                 'lat:'+markerWrapper.marker.getPosition().lat()+'<br/>'+
+                 'lng:'+markerWrapper.marker.getPosition().lng()+'<br/>'
+      });
+      markerWrapper.marker.addListener('click', function() {
+        infowindow.open(map, markerWrapper.marker);
+      });
+      markerWrapper.infoWindow = infowindow;
+    }
+
+    function attachDragEndHandler(markerWrapper) {
+      markerWrapper.marker.addListener('dragend', function() {
+        dragData.crisisId = markerWrapper.crisisId;
+        dragData.newLat = markerWrapper.marker.getPosition().lat();
+        dragData.newLng = markerWrapper.marker.getPosition().lng();
+        
+        markerWrapper.infoWindow.setContent(
+          '<h4>'+markerWrapper.marker.getTitle()+'</h4>'+
+          '<p>Location:</p>'+
+          'lat:'+dragData.newLat+'<br/>'+
+          'lng:'+dragData.newLng+'<br/>'
+        );
+        
+        window.dispatchEvent(mapMarkerDragEndEvent);
       });
     }
 
-    function attachDragEndHandlers() {
-      myMapMarkers.forEach(function (markerWrapper, index) {
-        markerWrapper.marker.addListener('dragend', function() {
-          dragData.crisisId = markerWrapper.crisisId;
-          dragData.newLat = markerWrapper.marker.getPosition().lat();
-          dragData.newLng = markerWrapper.marker.getPosition().lng();
-          window.dispatchEvent(mapMarkerDragEndevent);
-        });
-      });
-    }
+    function positionCircle() {}
 
     window.myMapMarkers = window.myMapMarkers || [];
     deleteMarkers(); // remove old map marker references 
@@ -73,16 +91,21 @@ module.exports = function(lat, lng, crises, zoom) {
         title: crisis.title,
         draggable: true
       });
-      myMapMarkers.push({ 
+      
+      var mapMarker = { 
         marker: marker, 
         crisisId: crisis['_id']
-      });
+      };
+      attachInfoWindow(mapMarker);
+      attachDragEndHandler(mapMarker);
+      myMapMarkers.push(mapMarker);
     });
     
     var dragData = { crisisId: null, newLat: null, newLng: null };
-    var mapMarkerDragEndevent = new CustomEvent('mapmarkerdragend', { 'detail': dragData });
-    attachDragEndHandlers();
-    if (myMapMarkers[0].crisisId) attachInfoWindows();
+    var mapMarkerDragEndEvent = new CustomEvent('mapmarkerdragend', { 'detail': dragData });
+    // if not displaying a new crisis
+    // if (myMapMarkers[0] && myMapMarkers[0].crisisId) attachInfoWindows();
+    // attachDragEndHandlers();
     showMarkers();
 
     window.onGeocode = function (e) {
@@ -100,10 +123,10 @@ module.exports = function(lat, lng, crises, zoom) {
           lat = e.detail.newLat, 
           crisisId = e.detail.crisisId;
 
-      var updatedCrisis = crises.filter(function(crisis) {
-        return crisisId && crisis['_id'] === crisisId;
-      })[0];
-      if (updatedCrisis) {
+      if (crises.length > 1) {
+        var updatedCrisis = crises.filter(function(crisis) {
+          return crisis['_id'] === crisisId;
+        })[0];
         updatedCrisis.epicenter = [lng, lat];
         $.ajax('http://localhost:8080/api/v1/crises/'+crisisId, {
           type: 'PUT',
@@ -123,10 +146,17 @@ module.exports = function(lat, lng, crises, zoom) {
             var results = resp.data.results;
             var newLocation = ( results.length ? results[0].formatted_address : 'Unknown location' );
             $address.val(newLocation);
+
+            window.postMessage({ 
+              type: 'newepicenter', 
+              epicenter: [lng, lat]
+            }, '*');
           },
           failure: function(error) { console.error(error); }
         });
       }
+
+      map.setCenter(new google.maps.LatLng(lat,lng));
     };
     window.addEventListener('mapmarkerdragend', onMapMarkerDragEnd, false);
   }

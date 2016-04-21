@@ -1,6 +1,6 @@
 interface Power {
-  name: string,
-  strength: number
+  name: string;
+  strength: number;
 }
 
 export interface Super {

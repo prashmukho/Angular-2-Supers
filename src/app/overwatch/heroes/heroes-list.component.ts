@@ -3,9 +3,10 @@ import {RouteParams, Router} from 'angular2/router';
 
 import {Hero} from './hero';
 import {Crisis} from '../crises/crisis';
-import {InvolvementComponent} from '../involvement.component';
+import {InvolvementComponent, InvolvementEvent} from '../involvement.component';
 import {HeroesService} from './heroes.service';
 import {UtilsService} from '../../utils.service';
+import {SupersHelperService} from '../supers-helper.service';
 
 @Component({
   template: require( '../templates/supers-list.html'),
@@ -21,23 +22,15 @@ export class HeroesListComponent implements OnInit {
     private _heroesService: HeroesService,
     private _utils: UtilsService,
     private _routeParams: RouteParams,
-    private _router: Router
+    private _router: Router,
+    private _handle: SupersHelperService<Hero>
   ) {}
 
   ngOnInit() {
-    this._heroesService.getHeroes()
-      .subscribe(
-        (list: Hero[]) => {
-          this.list = list;
-
-          let id = this._routeParams.get('id');
-          if (id) this.selectedId = id;
-        },
-        error => console.error(error)
-      );
+    this._handle.onSuperListInit(this, 'hero');
   }
 
-  isSelected(id: string): boolean { 
+  isSelected(id: string): boolean {
     return this.selectedId === id;
   }
   
@@ -50,24 +43,10 @@ export class HeroesListComponent implements OnInit {
   }
 
   delete(id: string) {
-    this._heroesService.deleteHero(id)
-      .subscribe(
-        (hero: Hero) => {
-          let index = this._utils.getDeletedListIndex(hero['_id'], this.list);
-          this.list.splice(index, 1);
-          console.log('deleted', hero);
-        },
-        error => console.error(error)
-      );
+    this._handle.onSuperListDelete(this, 'hero', id);
   }
 
-  involve($event) {
-    this._heroesService.involveInCrisis($event.superId, $event.crisisId)
-      .subscribe(
-        (crisis: Crisis) => this._utils.goTo(this._router.parent, [
-          'CrisesCenter', 'EditCrisis', { id: crisis['_id'] }
-        ]),
-        error => console.error(error)
-      );
+  involve($event: InvolvementEvent) {
+    this._handle.onSuperListInvolve(this, 'hero', $event.superId, $event.crisisId);
   }
 }

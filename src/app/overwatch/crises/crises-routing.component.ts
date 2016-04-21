@@ -2,8 +2,7 @@ import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {CrisesListComponent} from './crises-list.component';
-import {NewCrisisComponent} from './new-crisis.component';
-import {EditCrisisComponent} from './edit-crisis.component';
+import {CrisisDetailComponent} from './crisis-detail.component';
 import {CrisesService} from './crises.service';
 import {ActiveLinkService} from '../../active-link.service';
 import {GeolocationService} from './geolocation.service';
@@ -11,9 +10,7 @@ import {GeolocationService} from './geolocation.service';
 import './map.scss';
 
 @Component({
-  template: `
-    <router-outlet></router-outlet>
-  `,
+  template: '<router-outlet></router-outlet>',
   directives: [ROUTER_DIRECTIVES],
   providers: [GeolocationService]
 })
@@ -25,14 +22,14 @@ import './map.scss';
     useAsDefault: true
   },
   {
-    path: '/villains/:id/crises/new',
+    path: '/villains/:villainId/crises/new',
     name: 'NewCrisis',
-    component: NewCrisisComponent
+    component: CrisisDetailComponent
   },
   {
-    path: '/crises/:id',
+    path: '/crises/:crisisId',
     name: 'EditCrisis',
-    component: EditCrisisComponent
+    component: CrisisDetailComponent
   }
 ])
 export class CrisesRoutingComponent {

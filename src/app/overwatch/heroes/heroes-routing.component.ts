@@ -2,14 +2,11 @@ import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
 import {HeroesListComponent} from './heroes-list.component';
-import {NewHeroComponent} from './new-hero.component';
-import {EditHeroComponent} from './edit-hero.component';
+import {HeroDetailComponent} from './hero-detail.component';
 import {ActiveLinkService} from '../../active-link.service';
 
 @Component({
-  template: `
-    <router-outlet></router-outlet>
-  `,
+  template: '<router-outlet></router-outlet>',
   directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
@@ -22,12 +19,12 @@ import {ActiveLinkService} from '../../active-link.service';
   {
     path: '/new',
     name: 'NewHero',
-    component: NewHeroComponent,
+    component: HeroDetailComponent,
   },
   {
     path: '/:id',
     name: 'EditHero',
-    component: EditHeroComponent,
+    component: HeroDetailComponent,
   }
 ])
 export class HeroesRoutingComponent {

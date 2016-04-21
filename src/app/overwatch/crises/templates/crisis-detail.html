@@ -4,7 +4,8 @@
     <div class="row">
       <div class="form-group col-xs-8">
         <label for="title">Title</label>
-        <input type="text" class="form-control" required
+        <input type="text" class="form-control" 
+          placeholder="enter title" required
           [(ngModel)]="crisis.title" 
           ngControl="title" #title="ngForm" />
         <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
@@ -20,8 +21,10 @@
     </div>
     <div class="form-group">
       <label for="location">Location</label>
-      <input type="string" id="formatted-address" class="form-control" autocomplete="false"
+      <input type="text" id="formatted-address" class="form-control"
+        placeholder="enter location"
         [(ngModel)]="location"
+        ngControl="address" #address="ngForm"
         [geocode]="crisis['_id']" (geocodeRequest)="updateEpicenter($event)" />
     </div>
     <!-- <div class="form-group">
